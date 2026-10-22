@@ -3,42 +3,418 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0a3028">
-  <meta name="description" content="Renew your PigAbiz internet plan securely with M-Pesa.">
-  <title>Internet plans | PigAbiz</title>
+  <meta name="theme-color" content="#0f766e">
+  <meta name="description" content="Renew your PigAbiz Internet plan with M-Pesa.">
+  <title>PigAbiz Internet | Renew your plan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <style>
-    :root{color-scheme:light;font-family:Inter,ui-sans-serif,system-ui,-apple-system,"Segoe UI",sans-serif;color:#15362f;background:#f4f6f2;font-synthesis:none;text-rendering:optimizeLegibility;--green:#08764e;--deep:#0a3028;--muted:#64756e;--line:#dce5df;--amber:#f2b64a}
-    *{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;line-height:1.55}a{color:inherit}.wrap{width:min(1120px,100%);margin:auto;padding:0 28px}
-    .btn{display:inline-flex;justify-content:center;align-items:center;gap:9px;min-height:48px;padding:0 20px;border:0;border-radius:10px;font-size:.96rem;font-weight:700;font-family:inherit;text-decoration:none;cursor:pointer;transition:background .15s,transform .15s}.btn:hover{transform:translateY(-1px)}.btn:focus-visible{outline:3px solid #43a87875;outline-offset:3px}.primary{background:var(--green);color:#fff}.primary:hover{background:#066543}.accent{background:var(--amber);color:#352400}.accent:hover{background:#e5a52e}.outline{background:transparent;color:#fff;border:1px solid #ffffff75}.outline:hover{background:#ffffff18}
-    header{position:absolute;inset:0 0 auto;z-index:2}.nav{display:flex;align-items:center;justify-content:space-between;padding-top:20px;padding-bottom:20px}.brand{display:flex;align-items:center;gap:10px;color:white;text-decoration:none;font-size:1.15rem;font-weight:800;letter-spacing:-.04em}.mark{display:grid;place-items:center;width:38px;height:38px;border-radius:12px;background:var(--green)}.links{display:flex;gap:28px;list-style:none;margin:0;padding:0}.links a{color:#d5e5dc;text-decoration:none;font-size:.92rem}.links a:hover{color:#fff}
-    .hero{position:relative;overflow:hidden;padding:150px 0 74px;background:radial-gradient(900px 440px at 90% 0%,#13866250,transparent 65%),linear-gradient(145deg,#092b24,#104739 64%,#12634a);color:#fff}.hero:after{content:"";position:absolute;width:430px;height:430px;border:1px solid #ffffff18;border-radius:50%;right:-160px;top:40px;box-shadow:0 0 0 55px #ffffff0b,0 0 0 110px #ffffff08,0 0 0 165px #ffffff05;pointer-events:none}.hero-content{position:relative;z-index:1;max-width:710px}.eyebrow{display:inline-flex;gap:8px;align-items:center;color:#c8e6d4;font-size:.8rem;font-weight:700;letter-spacing:.04em;text-transform:uppercase}.dot{width:8px;height:8px;border-radius:50%;background:#79d49a;box-shadow:0 0 0 4px #79d49a25}.hero h1{max-width:720px;margin:19px 0 14px;font-size:clamp(2.65rem,6vw,4.5rem);letter-spacing:-.065em;line-height:1.02}.lead{max-width:580px;margin:0;color:#d0e1d8;font-size:1.1rem;line-height:1.7}.cta{display:flex;flex-wrap:wrap;gap:12px;margin-top:26px}.proof{display:flex;flex-wrap:wrap;gap:30px;margin-top:44px}.proof b{display:block;font-size:.99rem}.proof span{color:#b8d1c4;font-size:.83rem}
-    section{padding:76px 0}.section-head{margin-bottom:30px}.section-head h2{margin:0 0 7px;color:var(--deep);font-size:clamp(1.8rem,3.3vw,2.45rem);letter-spacing:-.045em}.section-head p{max-width:640px;margin:0;color:var(--muted)}.plan-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px;max-width:850px}.plan{position:relative;display:flex;flex-direction:column;padding:26px;border:1px solid var(--line);border-radius:18px;background:#fff;box-shadow:0 12px 38px #173a2c08}.plan.popular{border:2px solid #16845a;box-shadow:0 14px 38px #08764e17}.tag{position:absolute;top:-13px;left:22px;padding:4px 11px;border-radius:20px;background:#e3f3e8;color:#176842;font-size:.73rem;font-weight:800}.plan h3{margin:0;color:var(--deep);font-size:1.2rem}.duration{margin:4px 0 0;color:var(--muted);font-size:.9rem}.price{margin:19px 0 16px;color:var(--deep);font-size:2rem;font-weight:850;letter-spacing:-.05em}.price small{font-size:.87rem;font-weight:550;letter-spacing:0;color:var(--muted)}.plan ul{flex:1;list-style:none;margin:0 0 22px;padding:0;color:#43594f;font-size:.92rem}.plan li{position:relative;padding:7px 0 7px 25px}.plan li:before{content:"";position:absolute;left:2px;top:13px;width:12px;height:7px;border-left:2px solid var(--green);border-bottom:2px solid var(--green);transform:rotate(-45deg)}.plan .btn{width:100%}
-    .how{background:#fff;border-block:1px solid #e7ece8}.steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.step{padding:22px;border:1px solid var(--line);border-radius:15px;background:#fff}.step-num{display:grid;place-items:center;width:34px;height:34px;margin-bottom:13px;border-radius:50%;background:#e5f2e8;color:var(--green);font-weight:800}.step h3{margin:0 0 6px;color:var(--deep);font-size:1.02rem}.step p{margin:0;color:var(--muted);font-size:.9rem}
-    .help{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:25px 28px;border-radius:17px;background:#e9f1e9}.help h2{margin:0 0 5px;color:var(--deep);font-size:1.3rem}.help p{margin:0;color:var(--muted);font-size:.92rem}footer{padding:25px 0;background:var(--deep);color:#c0d2c9;font-size:.82rem}.foot{display:flex;justify-content:space-between;gap:14px}
-    dialog{width:min(440px,calc(100vw - 28px));padding:0;border:0;border-radius:19px;box-shadow:0 28px 90px #00150f66}dialog::backdrop{background:#071d17b8;backdrop-filter:blur(3px)}.modal{padding:27px}.modal h2{margin:0;color:var(--deep);font-size:1.3rem}.modal-sub{margin:6px 0 18px;color:var(--muted);font-size:.9rem}.summary{display:flex;justify-content:space-between;gap:12px;padding:13px 14px;margin-bottom:20px;border:1px solid var(--line);border-radius:10px;background:#f6f8f5;font-weight:700}.modal label{display:block;margin:0 0 7px;color:#29483d;font-size:.85rem;font-weight:750}.modal input{width:100%;min-height:51px;padding:0 14px;border:1px solid var(--line);border-radius:10px;font:inherit;font-size:1rem}.modal input:focus{outline:0;border-color:#43a878;box-shadow:0 0 0 3px #43a87820}.hint{margin:7px 0 16px;color:#87938d;font-size:.78rem}.error{min-height:1.25em;margin:0 0 10px;color:#a1382e;font-size:.85rem}.modal-actions{display:flex;gap:10px}.modal-actions .btn{flex:1}.secondary{border:1px solid var(--line);background:white;color:var(--deep)}.state{text-align:center;padding:12px 3px 0}.state h2{margin:14px 0 5px}.state p{margin:0 0 20px;color:var(--muted);font-size:.92rem}.icon{display:grid;place-items:center;width:58px;height:58px;margin:auto;border-radius:50%;background:#e7f3e9;color:var(--green);font-size:1.55rem;font-weight:800}.icon.fail{background:#fff0ed;color:#a1382e}.spinner{width:40px;height:40px;border:4px solid #e2ebe4;border-top-color:var(--green);border-radius:50%;animation:spin .8s linear infinite}@keyframes spin{to{transform:rotate(360deg)}}.state .btn{width:100%}
-    @media(max-width:700px){.wrap{padding-inline:20px}.links{display:none}.hero{padding:130px 0 58px}.hero:after{right:-270px;opacity:.65}.proof{gap:20px;margin-top:32px}.proof>div{min-width:120px}section{padding:58px 0}.plan-grid{grid-template-columns:1fr;gap:22px;max-width:480px}.steps{grid-template-columns:1fr}.help{align-items:flex-start;flex-direction:column}.foot{flex-direction:column}.plan{padding:23px}}
-    @media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+    :root {
+      color-scheme: light;
+      --brand: #0f766e;
+      --brand-strong: #115e59;
+      --brand-soft: #e8f5f3;
+      --accent: #f59e0b;
+      --accent-ink: #27200f;
+      --page: #f7faf9;
+      --surface: #fff;
+      --surface-soft: #f0f6f5;
+      --text: #172b2a;
+      --muted: #526663;
+      --line: #d8e4e1;
+      --success: #16794b;
+      --success-soft: #e8f6ee;
+      --danger: #b42318;
+      --danger-soft: #fff0ee;
+      --shadow: 0 20px 60px rgb(19 54 49 / 10%);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-synthesis: none;
+      text-rendering: optimizeLegibility;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { margin: 0; min-width: 320px; background: var(--page); color: var(--text); line-height: 1.6; }
+    body, button, input { font-family: inherit; }
+    a { color: inherit; }
+    button, input { font: inherit; }
+    button { color: inherit; }
+    img, svg { display: block; }
+    [hidden] { display: none !important; }
+    .wrap { width: min(1120px, 100% - 36px); margin-inline: auto; }
+    .section { padding-block: 72px; }
+    .section-head { max-width: 620px; margin: 0 auto 32px; text-align: center; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--brand); font-size: .76rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
+    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: currentColor; content: ""; }
+    h1, h2, h3, p { margin-top: 0; }
+    h1, h2, h3 { line-height: 1.12; letter-spacing: -.04em; }
+    h1 { margin-bottom: 16px; font-size: clamp(2.7rem, 11vw, 4.7rem); font-weight: 800; }
+    h2 { margin-bottom: 12px; font-size: clamp(1.8rem, 6vw, 2.55rem); font-weight: 800; }
+    h3 { margin-bottom: 8px; font-size: 1.1rem; }
+    .section-head p, .muted { color: var(--muted); }
+    .section-head p { margin-bottom: 0; font-size: 1rem; }
+
+    .btn { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 10px; padding: 0 19px; border: 1px solid transparent; border-radius: 12px; font-size: .95rem; font-weight: 750; text-align: center; text-decoration: none; cursor: pointer; transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn:active { transform: translateY(0); }
+    .btn:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 45%, transparent); outline-offset: 3px; }
+    .btn-cta { background: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 20px rgb(245 158 11 / 22%); }
+    .btn-cta:hover { background: #e38c00; }
+    .btn-brand { background: var(--brand); color: #fff; }
+    .btn-brand:hover { background: var(--brand-strong); }
+    .btn-quiet { border-color: var(--line); background: var(--surface); color: var(--text); }
+    .btn-quiet:hover { background: var(--surface-soft); }
+    .btn[disabled] { cursor: wait; opacity: .72; transform: none; }
+
+    .site-header { position: absolute; z-index: 3; inset: 0 0 auto; color: white; }
+    .nav { display: flex; min-height: 74px; align-items: center; justify-content: space-between; gap: 16px; }
+    .wordmark { display: inline-flex; align-items: center; gap: 10px; color: inherit; font-size: 1.04rem; font-weight: 800; letter-spacing: -.045em; text-decoration: none; }
+    .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgb(255 255 255 / 27%); border-radius: 12px; background: rgb(255 255 255 / 12%); }
+    .nav-links { display: none; align-items: center; gap: 26px; }
+    .nav-links a { color: rgb(255 255 255 / 88%); font-size: .9rem; font-weight: 650; text-decoration: none; }
+    .nav-links a:hover { color: #fff; }
+    .nav-contact { color: rgb(255 255 255 / 92%); font-size: .78rem; font-weight: 700; text-decoration: none; }
+
+    .hero { position: relative; overflow: hidden; padding: 116px 0 60px; background: radial-gradient(650px 420px at 90% 8%, rgb(45 212 191 / 24%), transparent 70%), linear-gradient(135deg, #0b3d39, #0f766e 75%, #168b80); color: white; }
+    .hero::after { position: absolute; right: -180px; bottom: -360px; width: 540px; height: 540px; border: 1px solid rgb(255 255 255 / 12%); border-radius: 50%; box-shadow: 0 0 0 55px rgb(255 255 255 / 4%), 0 0 0 110px rgb(255 255 255 / 3%); content: ""; pointer-events: none; }
+    .hero-layout { position: relative; z-index: 1; display: grid; align-items: center; gap: 34px; }
+    .hero-copy { max-width: 650px; animation: rise-in .55s ease both; }
+    .hero .eyebrow { color: #c3f0e9; }
+    .hero h1 { max-width: 11ch; margin-top: 17px; }
+    .hero-lead { max-width: 56ch; margin-bottom: 25px; color: #e0f2ef; font-size: 1.03rem; line-height: 1.75; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 11px; }
+    .hero .btn-quiet { border-color: rgb(255 255 255 / 42%); background: transparent; color: #fff; }
+    .hero .btn-quiet:hover { background: rgb(255 255 255 / 10%); }
+    .hero-art { width: min(100%, 440px); justify-self: center; filter: drop-shadow(0 22px 40px rgb(0 0 0 / 17%)); animation: rise-in .65s .08s ease both; }
+    .hero-note { display: flex; align-items: center; gap: 10px; margin-top: 27px; color: #d1e9e5; font-size: .82rem; }
+    .hero-note svg { flex: 0 0 auto; }
+
+    .plans-section { padding-top: 66px; }
+    .plan-grid { display: grid; max-width: 850px; gap: 18px; margin-inline: auto; }
+    .plan { position: relative; display: flex; min-width: 0; flex-direction: column; padding: 25px 23px 23px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 10px 30px rgb(24 55 51 / 4%); }
+    .plan h3 { margin-bottom: 7px; font-size: 1.12rem; }
+    .plan-duration { margin-bottom: 16px; color: var(--muted); font-size: .88rem; }
+    .plan-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px; margin: 0 0 13px; color: var(--text); }
+    .plan-price strong { font-size: clamp(2.65rem, 13vw, 3.45rem); font-weight: 800; letter-spacing: -.075em; line-height: 1; }
+    .plan-price span { color: var(--muted); font-size: .9rem; font-weight: 600; }
+    .plan-list { display: grid; gap: 10px; margin: 7px 0 22px; padding: 0; list-style: none; color: var(--muted); font-size: .9rem; }
+    .plan-list li { display: flex; align-items: flex-start; gap: 9px; }
+    .plan-list svg { flex: 0 0 auto; margin-top: 4px; color: var(--brand); }
+    .plan .btn { width: 100%; margin-top: auto; }
+    .plan-monthly { border: 2px solid var(--accent); box-shadow: 0 18px 42px rgb(28 67 60 / 10%); }
+    .best-value { position: absolute; top: 16px; right: 16px; padding: 6px 10px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-size: .69rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
+    .saving { margin: -2px 0 15px; color: var(--brand-strong); font-size: .82rem; font-weight: 750; }
+
+    .steps-section { border-block: 1px solid var(--line); background: var(--surface); }
+    .steps-grid { display: grid; gap: 14px; }
+    .step-card { display: grid; grid-template-columns: 46px 1fr; align-items: start; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--page); }
+    .step-icon { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 14px; background: var(--brand-soft); color: var(--brand); }
+    .step-number { margin: 0 0 4px; color: var(--brand); font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .step-card h3 { margin: 0 0 5px; font-size: 1rem; }
+    .step-card p { margin: 0; color: var(--muted); font-size: .86rem; }
+
+    .support-card { display: grid; gap: 22px; padding: 24px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
+    .support-card h2 { margin-bottom: 9px; font-size: clamp(1.65rem, 6vw, 2.15rem); }
+    .support-card p { max-width: 54ch; margin-bottom: 0; color: var(--muted); }
+    .support-actions { display: grid; gap: 10px; }
+    .contact-label { margin-bottom: 5px; color: var(--muted); font-size: .73rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
+    .support-number { display: inline-block; margin-bottom: 11px; color: var(--brand-strong); font-size: 1rem; font-weight: 750; text-decoration: none; }
+
+    .faq-list { display: grid; gap: 10px; max-width: 800px; margin-inline: auto; }
+    .faq-item { overflow: clip; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+    .faq-item summary { position: relative; padding: 17px 48px 17px 18px; font-size: .94rem; font-weight: 750; cursor: pointer; list-style: none; }
+    .faq-item summary::-webkit-details-marker { display: none; }
+    .faq-item summary::after { position: absolute; top: 50%; right: 18px; color: var(--brand); font-size: 1.25rem; content: "+"; transform: translateY(-50%); }
+    .faq-item[open] summary::after { content: "−"; }
+    .faq-answer { padding: 0 18px 17px; color: var(--muted); font-size: .88rem; }
+    .faq-answer p { margin: 0; }
+
+    .site-footer { padding-block: 28px; background: #0b3d39; color: #e4f3f1; }
+    .footer-layout { display: flex; flex-direction: column; gap: 17px; }
+    .footer-brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 800; letter-spacing: -.04em; }
+    .footer-meta { display: flex; flex-direction: column; gap: 4px; color: #c5deda; font-size: .79rem; }
+    .footer-meta a { color: inherit; text-decoration: none; }
+    .copyright { color: #c5deda; font-size: .76rem; }
+
+    dialog { width: min(480px, calc(100vw - 30px)); max-height: min(88vh, 760px); padding: 0; overflow: auto; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); color: var(--text); box-shadow: 0 30px 100px rgb(0 0 0 / 28%); }
+    dialog::backdrop { background: rgb(4 26 24 / 60%); backdrop-filter: blur(4px); }
+    .modal { padding: 25px; }
+    .modal-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
+    .modal h2 { margin-bottom: 5px; font-size: 1.42rem; }
+    .modal-sub { margin: 0 0 17px; color: var(--muted); font-size: .86rem; }
+    .close-modal { display: grid; width: 44px; height: 44px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--muted); cursor: pointer; }
+    .summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 19px; padding: 13px 14px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-soft); font-size: .88rem; font-weight: 750; }
+    .summary span:last-child { color: var(--brand-strong); }
+    .modal label { display: block; margin-bottom: 7px; font-size: .83rem; font-weight: 750; }
+    .modal input { width: 100%; min-height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); font-size: 1rem; }
+    .modal input::placeholder { color: var(--muted); opacity: 1; }
+    .hint { margin: 7px 0 15px; color: var(--muted); font-size: .76rem; }
+    .text-toggle { min-height: 44px; padding: 7px 0; border: 0; background: transparent; color: var(--brand-strong); font-size: .79rem; font-weight: 650; text-align: left; text-decoration: underline; cursor: pointer; }
+    .error { min-height: 1.25em; margin: 0 0 10px; color: var(--danger); font-size: .83rem; }
+    .modal-actions { display: flex; gap: 10px; }
+    .modal-actions .btn { flex: 1; }
+    .state { padding: 13px 1px 2px; text-align: center; }
+    .state h2 { margin: 14px 0 7px; }
+    .state > p { margin: 0 0 19px; color: var(--muted); font-size: .9rem; }
+    .state-mark { display: grid; width: 62px; height: 62px; place-items: center; margin: 0 auto; border-radius: 50%; background: var(--brand-soft); color: var(--brand); }
+    .state-mark.success { background: var(--success-soft); color: var(--success); }
+    .state-mark.fail { background: var(--danger-soft); color: var(--danger); }
+    .spinner { width: 25px; height: 25px; border: 3px solid color-mix(in srgb, var(--brand) 24%, transparent); border-top-color: var(--brand); border-radius: 50%; animation: spin .8s linear infinite; }
+    .progress-list { display: grid; gap: 9px; margin: 22px 0; text-align: left; }
+    .progress-step { display: flex; align-items: center; gap: 11px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); font-size: .84rem; font-weight: 700; }
+    .progress-step.current { border-color: color-mix(in srgb, var(--brand) 42%, var(--line)); background: var(--brand-soft); color: var(--brand-strong); }
+    .progress-dot { display: grid; width: 25px; height: 25px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--surface-soft); color: var(--muted); font-size: .7rem; }
+    .progress-step.current .progress-dot { background: var(--brand); color: white; }
+    .state .btn { width: 100%; }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes rise-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (min-width: 700px) {
+      .wrap { width: min(1120px, 100% - 56px); }
+      .nav { min-height: 84px; }
+      .nav-links { display: flex; }
+      .nav-contact { font-size: .86rem; }
+      .hero { padding: 146px 0 82px; }
+      .hero-layout { grid-template-columns: minmax(0, 1.08fr) minmax(330px, .92fr); gap: 44px; }
+      .hero-art { justify-self: end; }
+      .hero-lead { font-size: 1.08rem; }
+      .section { padding-block: 88px; }
+      .plans-section { padding-top: 78px; }
+      .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
+      .plan { padding: 28px; }
+      .plan-monthly { transform: scale(1.025); }
+      .steps-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+      .step-card { grid-template-columns: 1fr; padding: 21px; }
+      .support-card { grid-template-columns: 1fr auto; align-items: center; gap: 40px; padding: 36px; }
+      .support-actions { min-width: 230px; }
+      .footer-layout { flex-direction: row; align-items: center; justify-content: space-between; }
+    }
+    @media (max-width: 699px) {
+      .section { padding-block: 58px; }
+      .plans-section { padding-top: 56px; }
+      .hero-art { max-width: 320px; margin-top: 5px; }
+      .plan { padding: 24px 20px 20px; }
+      dialog { width: 100%; max-width: none; max-height: min(92dvh, 760px); margin: auto 0 0; border-right: 0; border-bottom: 0; border-left: 0; border-radius: 22px 22px 0 0; }
+      .modal { padding: 22px 20px max(22px, env(safe-area-inset-bottom)); }
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        color-scheme: dark;
+        --brand: #2dd4bf;
+        --brand-strong: #5eead4;
+        --brand-soft: #123d3a;
+        --accent: #f59e0b;
+        --accent-ink: #211a0d;
+        --page: #0d1716;
+        --surface: #142220;
+        --surface-soft: #1b2d2a;
+        --text: #e7f0ee;
+        --muted: #b1c3bf;
+        --line: #2c403c;
+        --success: #55d18c;
+        --success-soft: #173a2a;
+        --danger: #ff8a80;
+        --danger-soft: #3b211f;
+        --shadow: 0 20px 60px rgb(0 0 0 / 24%);
+      }
+      .hero { background: radial-gradient(650px 420px at 90% 8%, rgb(45 212 191 / 18%), transparent 70%), linear-gradient(135deg, #092a27, #0b514b 75%, #0f6960); }
+      .hero .eyebrow { color: #b7f3ea; }
+      .plan-monthly { border-color: var(--accent); }
+      .site-footer { background: #071f1d; }
+      .saving { color: var(--brand-strong); }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
   </style>
 </head>
 <body>
-  <header><nav class="wrap nav" aria-label="Main navigation"><a class="brand" href="#top"><span class="mark" aria-hidden="true"><svg width="21" height="21" viewBox="0 0 24 24" fill="none"><path d="M4 9.5 12 4l8 5.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 4 18.5v-9Z" stroke="white" stroke-width="1.8" stroke-linejoin="round"/><path d="M9 20v-6h6v6" stroke="white" stroke-width="1.8" stroke-linejoin="round"/></svg></span>PigAbiz</a><ul class="links"><li><a href="#plans">Plans</a></li><li><a href="#how">How it works</a></li><li><a href="#support">Support</a></li></ul></nav></header>
-  <main id="top">
-    <section class="hero"><div class="wrap hero-content"><span class="eyebrow"><i class="dot"></i> Reliable home internet</span><h1>Stay connected to what matters.</h1><p class="lead">Renew your PigAbiz internet plan in a few taps. Pay with M-Pesa and your service will reactivate after we confirm your payment.</p><div class="cta"><a class="btn accent" href="#plans">View plans <span aria-hidden="true">↓</span></a><a class="btn outline" href="#support">Get support</a></div><div class="proof"><div><b>Quick to renew</b><span>M-Pesa payment prompt</span></div><div><b>Simple plans</b><span>Weekly or monthly access</span></div><div><b>Local support</b><span>Here when you need help</span></div></div></div></section>
-    <section id="plans"><div class="wrap"><div class="section-head"><h2>Choose your plan</h2><p>Select the period you want to renew, then approve the M-Pesa prompt sent to your phone.</p></div><div class="plan-grid">
-      <article class="plan"><h3>Weekly</h3><p class="duration">7 days of internet access</p><div class="price">KES 300 <small>/ 7 days</small></div><ul><li>Fast, dependable connection</li><li>Pay securely with M-Pesa</li><li>Service renews after payment confirmation</li></ul><button class="btn primary" type="button" data-plan="weekly">Choose weekly</button></article>
-      <article class="plan popular"><span class="tag">Best value</span><h3>Monthly</h3><p class="duration">30 days of internet access</p><div class="price">KES 999 <small>/ 30 days</small></div><ul><li>One easy monthly renewal</li><li>Pay securely with M-Pesa</li><li>Service renews after payment confirmation</li></ul><button class="btn primary" type="button" data-plan="monthly">Choose monthly</button></article>
-    </div></div></section>
-    <section id="how" class="how"><div class="wrap"><div class="section-head"><h2>Renew in three steps</h2><p>Keep your existing account connected with a straightforward M-Pesa payment.</p></div><div class="steps"><article class="step"><span class="step-num">1</span><h3>Choose a plan</h3><p>Select weekly or monthly access to see your payment total.</p></article><article class="step"><span class="step-num">2</span><h3>Approve M-Pesa</h3><p>Enter your account phone number and approve the prompt with your PIN.</p></article><article class="step"><span class="step-num">3</span><h3>Get back online</h3><p>We confirm the payment and renew the service on your account.</p></article></div></div></section>
-    <section id="support"><div class="wrap"><div class="help"><div><h2>Need a hand?</h2><p>Contact PigAbiz support using the phone number or channel provided when your service was set up.</p></div><a class="btn primary" href="#plans">View plans</a></div></div></section>
-  </main>
-  <footer><div class="wrap foot"><span>© <span id="year"></span> PigAbiz Internet</span><span>Internet access for your home and business.</span></div></footer>
+  <header class="site-header">
+    <nav class="wrap nav" aria-label="Main navigation">
+      <a class="wordmark" href="#top" aria-label="PigAbiz Internet home">
+        <span class="brand-mark" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 9.5a12 12 0 0 1 17 0M6.8 12.8a7.3 7.3 0 0 1 10.4 0M10.1 16.1a2.7 2.7 0 0 1 3.8 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="19.2" r="1.2" fill="currentColor"/></svg>
+        </span>
+        PigAbiz Internet
+      </a>
+      <div class="nav-links"><a href="#plans">Plans</a><a href="#how">How it works</a><a href="#faq">FAQ</a><a href="#support">Support</a></div>
+      <a class="nav-contact" href="#support">Talk to support</a>
+    </nav>
+  </header>
 
-  <dialog id="payment-dialog" aria-labelledby="dialog-title"><div class="modal">
-    <div id="form-view"><h2 id="dialog-title">Create your account</h2><p class="modal-sub">Enter your details, then approve the M-Pesa prompt to activate your plan.</p><div class="summary"><span id="summary-plan"></span><span id="summary-price"></span></div><form id="payment-form"><div id="signup-fields"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" maxlength="120" required><p class="hint">We’ll link your device after signup.</p></div><label for="phone">M-Pesa phone number</label><input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="254712345678" pattern="2547[0-9]{8}" maxlength="12" aria-describedby="phone-hint" required><p class="hint" id="phone-hint">Use the format 2547XXXXXXXX.</p><button class="hint" id="mode-toggle" type="button" style="border:0;background:none;padding:0;cursor:pointer;text-decoration:underline">Already have an account? Renew instead</button><p class="error" id="error" role="alert"></p><div class="modal-actions"><button class="btn secondary" id="cancel" type="button">Cancel</button><button class="btn primary" id="pay-button" type="submit">Create account &amp; continue</button></div></form></div>
-    <div id="wait-view" class="state" hidden><div class="icon spinner" aria-hidden="true"></div><h2>Check your phone</h2><p>Approve the M-Pesa prompt with your PIN. This page will update when we receive confirmation.</p></div>
-    <div id="success-view" class="state" hidden><div class="icon" aria-hidden="true">✓</div><h2>Payment received</h2><p id="success-message" role="status"></p><button class="btn primary" type="button" data-close>Done</button></div>
-    <div id="failure-view" class="state" hidden><div class="icon fail" aria-hidden="true">!</div><h2>Payment not confirmed</h2><p id="failure-message" role="status"></p><div class="modal-actions"><button class="btn secondary" type="button" data-close>Close</button><button class="btn primary" id="retry" type="button">Try again</button></div></div>
-  </div></dialog>
+  <main id="top">
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-layout">
+        <div class="hero-copy">
+          <span class="eyebrow">PigAbiz Internet</span>
+          <h1 id="hero-title">Your connection, renewed in a few taps.</h1>
+          <p class="hero-lead">Choose a plan and approve the M-Pesa prompt sent to your account phone.</p>
+          <div class="hero-actions">
+            <a class="btn btn-cta" href="#plans">Renew now <span aria-hidden="true">→</span></a>
+            <a class="btn btn-quiet" href="#plans">View plans</a>
+          </div>
+          <p class="hero-note">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 19 6v5.5c0 4.1-2.8 7.3-7 9-4.2-1.7-7-4.9-7-9V6l7-2.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Payment confirmation updates your PigAbiz account.
+          </p>
+        </div>
+        <svg class="hero-art" viewBox="0 0 440 330" role="img" aria-labelledby="signal-title signal-desc">
+          <title id="signal-title">Home with a Wi-Fi signal</title>
+          <desc id="signal-desc">A simple illustration of a connected home.</desc>
+          <defs><linearGradient id="art-card" x1="36" y1="26" x2="401" y2="309" gradientUnits="userSpaceOnUse"><stop stop-color="#f7fffd"/><stop offset="1" stop-color="#cdeee8"/></linearGradient><linearGradient id="art-house" x1="116" y1="123" x2="296" y2="283" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#d7eeea"/></linearGradient></defs>
+          <rect x="12" y="12" width="416" height="306" rx="30" fill="url(#art-card)"/>
+          <circle cx="356" cy="77" r="31" fill="#0f766e" opacity=".12"/><circle cx="356" cy="77" r="16" fill="#0f766e"/>
+          <path d="m95 170 125-94 125 94v109a12 12 0 0 1-12 12H107a12 12 0 0 1-12-12V170Z" fill="url(#art-house)" stroke="#0f766e" stroke-width="5" stroke-linejoin="round"/>
+          <path d="M178 291v-83a42 42 0 0 1 84 0v83M143 184h26m103 0h26" stroke="#0f766e" stroke-width="5" stroke-linecap="round"/>
+          <path d="M170 95a71 71 0 0 1 100 0m-82 18a46 46 0 0 1 64 0m-45 18a20 20 0 0 1 27 0" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
+          <circle cx="220" cy="145" r="5" fill="#0f766e"/>
+          <rect x="287" y="218" width="80" height="63" rx="14" fill="#fff" stroke="#c6ddd9" stroke-width="2"/>
+          <path d="M303 239h48m-48 15h36" stroke="#0f766e" stroke-width="5" stroke-linecap="round" opacity=".7"/>
+          <circle cx="349" cy="267" r="5" fill="#0f766e"/>
+        </svg>
+      </div>
+    </section>
+
+    <section class="section plans-section" id="plans" aria-labelledby="plans-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Choose your plan</span>
+          <h2 id="plans-title">Straightforward plans. Easy renewal.</h2>
+          <p>Select a plan, enter the phone number on your account, then approve the M-Pesa prompt.</p>
+        </div>
+        <div class="plan-grid">
+          <article class="plan">
+            <h3>Weekly</h3>
+            <p class="plan-duration">A simple 7-day renewal</p>
+            <p class="plan-price"><strong>KES 300</strong><span>/ 7 days</span></p>
+            <ul class="plan-list">
+              <li><svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Pay with an M-Pesa prompt</li>
+              <li><svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Your account updates after confirmation</li>
+            </ul>
+            <button class="btn btn-brand" type="button" data-plan="weekly">Choose weekly</button>
+          </article>
+          <article class="plan plan-monthly">
+            <span class="best-value">Best value</span>
+            <h3>Monthly</h3>
+            <p class="plan-duration">A full 30-day renewal</p>
+            <p class="plan-price"><strong>KES 999</strong><span>/ 30 days</span></p>
+            <p class="saving">About KES 291 less than 4.3 weekly renewals.</p>
+            <ul class="plan-list">
+              <li><svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Pay with an M-Pesa prompt</li>
+              <li><svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Your account updates after confirmation</li>
+            </ul>
+            <button class="btn btn-brand" type="button" data-plan="monthly">Choose monthly</button>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section steps-section" id="how" aria-labelledby="how-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">How it works</span>
+          <h2 id="how-title">Renew in three clear steps.</h2>
+          <p>Keep the phone linked to your account nearby for the M-Pesa prompt.</p>
+        </div>
+        <div class="steps-grid">
+          <article class="step-card">
+            <span class="step-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z" stroke="currentColor" stroke-width="1.7"/><path d="M8 9h8m-8 3h8m-8 3h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+            <div><p class="step-number">Step 01</p><h3>Choose a plan</h3><p>Pick a weekly or monthly renewal for your account.</p></div>
+          </article>
+          <article class="step-card">
+            <span class="step-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="6" y="3.5" width="12" height="17" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6m-6 3h6m-6 3h3m-1 4h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+            <div><p class="step-number">Step 02</p><h3>Approve M-Pesa</h3><p>Enter your account phone number and approve the prompt with your PIN.</p></div>
+          </article>
+          <article class="step-card">
+            <span class="step-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3.5 19 6v5.5c0 4.1-2.8 7.3-7 9-4.2-1.7-7-4.9-7-9V6l7-2.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+            <div><p class="step-number">Step 03</p><h3>Wait for confirmation</h3><p>The portal checks for payment confirmation and updates your account.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="support" aria-labelledby="support-title">
+      <div class="wrap support-card">
+        <div>
+          <span class="eyebrow">Here to help</span>
+          <h2 id="support-title">Need help with your renewal?</h2>
+          <p>If payment is confirmed but your connection is still offline, contact PigAbiz support and share your M-Pesa confirmation message.</p>
+        </div>
+        <div class="support-actions">
+          <p class="contact-label">Call PigAbiz support</p>
+          <a class="support-number" href="tel:{{SUPPORT_PHONE}}">{{SUPPORT_PHONE}}</a>
+          <a class="btn btn-brand" href="https://wa.me/{{WHATSAPP_NUMBER}}" target="_blank" rel="noopener noreferrer">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11.7a8 8 0 0 1-11.8 7L4 20l1.3-4A8 8 0 1 1 20 11.7Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 9c.5 2 2 3.5 4 4l1-1 2 1c-.5 1.5-1.5 2-3 1.5-2.5-.8-4.8-3.1-5.5-5.5C7 7.5 7.5 6.5 9 6l1 2-1 1Z" fill="currentColor"/></svg>
+            Chat on WhatsApp
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="faq" aria-labelledby="faq-title">
+      <div class="wrap">
+        <div class="section-head">
+          <span class="eyebrow">Quick answers</span>
+          <h2 id="faq-title">Frequently asked questions</h2>
+        </div>
+        <div class="faq-list">
+          <details class="faq-item"><summary>How long until I’m reconnected?</summary><div class="faq-answer"><p>The portal updates your account when it receives payment confirmation. Keep this page open while it checks. If no confirmation appears within two minutes, check your M-Pesa message and contact support.</p></div></details>
+          <details class="faq-item"><summary>What if I paid but I’m still offline?</summary><div class="faq-answer"><p>Keep your M-Pesa confirmation message and contact PigAbiz support using the number or WhatsApp link above. The portal records your account status; network equipment may still need attention.</p></div></details>
+          <details class="faq-item"><summary>Can I pay for someone else?</summary><div class="faq-answer"><p>Choose the plan for the account and enter the phone number linked to that account. The M-Pesa prompt is sent to the number you enter, so the person with that phone must approve it.</p></div></details>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap footer-layout">
+      <span class="footer-brand"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 9.5a12 12 0 0 1 17 0M6.8 12.8a7.3 7.3 0 0 1 10.4 0m-7.1 3.3a2.7 2.7 0 0 1 3.8 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="19.2" r="1.2" fill="currentColor"/></svg>PigAbiz Internet</span>
+      <span class="footer-meta"><a href="tel:{{SUPPORT_PHONE}}">Support: {{SUPPORT_PHONE}}</a><span>Internet plan renewals with M-Pesa</span></span>
+      <span class="copyright">© <span id="year"></span> PigAbiz Internet</span>
+    </div>
+  </footer>
+
+  <dialog id="payment-dialog" aria-labelledby="dialog-title">
+    <div class="modal">
+      <div id="form-view">
+        <div class="modal-heading">
+          <div><h2 id="dialog-title">Create your account</h2><p class="modal-sub">Choose your plan, then approve the M-Pesa prompt.</p></div>
+          <button class="close-modal" id="cancel" type="button" aria-label="Close payment dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+        </div>
+        <div class="summary"><span id="summary-plan"></span><span id="summary-price"></span></div>
+        <form id="payment-form">
+          <div id="signup-fields"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" maxlength="120" required><p class="hint">We’ll link your device after signup.</p></div>
+          <label for="phone">M-Pesa phone number</label>
+          <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="254712345678" pattern="2547[0-9]{8}" maxlength="12" aria-describedby="phone-hint" required>
+          <p class="hint" id="phone-hint">Format: 07XX XXX XXX. Enter as 2547XXXXXXXX, without spaces.</p>
+          <button class="text-toggle" id="mode-toggle" type="button">Already have an account? Renew instead</button>
+          <p class="error" id="error" role="alert"></p>
+          <div class="modal-actions"><button class="btn btn-quiet" id="cancel-secondary" type="button">Back</button><button class="btn btn-brand" id="pay-button" type="submit">Create account &amp; continue</button></div>
+        </form>
+      </div>
+      <div id="wait-view" class="state" hidden aria-live="polite">
+        <div class="state-mark" aria-hidden="true"><span class="spinner"></span></div>
+        <h2>Check your phone for the M-Pesa prompt</h2>
+        <p>Approve the prompt with your M-Pesa PIN. Keep this page open while we wait for confirmation.</p>
+        <div class="progress-list" aria-label="Payment progress">
+          <div class="progress-step current"><span class="progress-dot"><span class="spinner" style="width:13px;height:13px;border-width:2px;border-color:rgb(255 255 255 / 45%);border-top-color:#fff"></span></span><span>Check your phone for the prompt</span></div>
+          <div class="progress-step"><span class="progress-dot">2</span><span>Confirming payment...</span></div>
+        </div>
+      </div>
+      <div id="success-view" class="state" hidden aria-live="polite">
+        <div class="state-mark success" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2>Payment received</h2><p id="success-message" role="status"></p><button class="btn btn-brand" type="button" data-close>Done</button>
+      </div>
+      <div id="failure-view" class="state" hidden aria-live="polite">
+        <div class="state-mark fail" aria-hidden="true"><span style="font-size:1.6rem;font-weight:800">!</span></div>
+        <h2>Payment not confirmed</h2><p id="failure-message" role="status"></p>
+        <div class="modal-actions"><button class="btn btn-quiet" type="button" data-close>Close</button><button class="btn btn-brand" id="retry" type="button">Try again</button></div>
+      </div>
+    </div>
+  </dialog>
+
   <script>
     const $ = (selector) => document.querySelector(selector);
     const prices = { weekly: 300, monthly: 999 };
@@ -78,7 +454,7 @@
         const result = await response.json();
         if (result.status === 'paid') {
           stopPolling();
-          $('#success-message').textContent = 'Your payment is confirmed and your internet plan has been renewed.';
+          $('#success-message').textContent = 'Your payment is confirmed and your PigAbiz account is marked active.';
           showView('success-view');
         } else if (result.status === 'failed') {
           stopPolling();
@@ -137,6 +513,7 @@
 
     document.querySelectorAll('[data-plan]').forEach((button) => button.addEventListener('click', () => openPayment(button.dataset.plan)));
     $('#cancel').addEventListener('click', () => dialog.close());
+    $('#cancel-secondary').addEventListener('click', () => dialog.close());
     $('#mode-toggle').addEventListener('click', () => {
       renewalMode = !renewalMode;
       registrationComplete = false;
