@@ -1,12 +1,13 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const Customer = require('../models/Customer');
+const { adminAuth } = require('../middleware/admin-auth');
 
 const router = express.Router();
 const PHONE_PATTERN = /^2547\d{8}$/;
 const MAC_PATTERN = /^(?:[0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/;
 
-router.get('/customers', async (req, res, next) => {
+router.get('/customers', adminAuth, async (req, res, next) => {
   try {
     const customers = await Customer.find().sort({ createdAt: -1 }).lean();
     res.json(customers);
@@ -40,7 +41,7 @@ router.post('/register', async (req, res, next) => {
   }
 });
 
-router.post('/customers', async (req, res, next) => {
+router.post('/customers', adminAuth, async (req, res, next) => {
   try {
     const { name, phone, macAddress, plan, status = 'expired', expiresAt = null } = req.body;
     if (typeof name !== 'string' || !name.trim() || !PHONE_PATTERN.test(phone || '') ||
@@ -57,7 +58,7 @@ router.post('/customers', async (req, res, next) => {
   }
 });
 
-router.get('/customers/:id', async (req, res, next) => {
+router.get('/customers/:id', adminAuth, async (req, res, next) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id)) return res.status(400).json({ error: 'Invalid customer ID.' });
     const customer = await Customer.findById(req.params.id);
@@ -66,7 +67,7 @@ router.get('/customers/:id', async (req, res, next) => {
   } catch (error) { next(error); }
 });
 
-router.patch('/customers/:id/suspend', async (req, res, next) => {
+router.patch('/customers/:id/suspend', adminAuth, async (req, res, next) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id)) return res.status(400).json({ error: 'Invalid customer ID.' });
     const customer = await Customer.findByIdAndUpdate(req.params.id, { $set: { status: 'suspended' } }, { new: true, runValidators: true });
@@ -75,7 +76,7 @@ router.patch('/customers/:id/suspend', async (req, res, next) => {
   } catch (error) { next(error); }
 });
 
-router.get('/dashboard', async (req, res, next) => {
+router.get('/dashboard', adminAuth, async (req, res, next) => {
   try {
     const [total, grouped] = await Promise.all([
       Customer.countDocuments(),

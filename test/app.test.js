@@ -19,6 +19,7 @@ Object.assign(process.env, {
   MPESA_SHORTCODE: '174379',
   MPESA_PASSKEY: 'test-passkey',
   MPESA_CALLBACK_URL: 'https://callback.test/api/mpesa/callback',
+  ADMIN_API_KEY: 'test-admin-api-key-with-sufficient-length',
   AT_API_KEY: '',
   AT_USERNAME: 'sandbox',
   AT_SENDER_ID: ''
@@ -152,6 +153,20 @@ test('unauthenticated customer-management endpoints are rejected', async (t) => 
   await t.test('GET /api/dashboard', async () => {
     const response = await request(app).get('/api/dashboard');
     assert.ok([401, 403].includes(response.status), `got ${response.status}`);
+  });
+  await t.test('a configured admin key is accepted', async () => {
+    const response = await request(app).get('/api/dashboard').set('x-api-key', process.env.ADMIN_API_KEY);
+    assert.equal(response.status, 200);
+  });
+  await t.test('missing admin-key configuration fails closed', async () => {
+    const configuredKey = process.env.ADMIN_API_KEY;
+    delete process.env.ADMIN_API_KEY;
+    try {
+      const response = await request(app).get('/api/dashboard');
+      assert.equal(response.status, 503);
+    } finally {
+      process.env.ADMIN_API_KEY = configuredKey;
+    }
   });
 });
 
