@@ -1,0 +1,22 @@
+{
+  "name": "small-isp-customer-management",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Customer, M-Pesa payment, captive portal, and expiry management for a small Kenyan ISP.",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node --watch index.js"
+  },
+  "engines": {
+    "node": ">=20"
+  },
+  "dependencies": {
+    "africastalking": "^0.7.6",
+    "axios": "^1.8.4",
+    "dotenv": "^16.4.7",
+    "express": "^4.21.2",
+    "mongoose": "^8.13.2",
+    "node-cron": "^3.0.3"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "name": "isp-mvp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Landing page, plans and M-Pesa STK push for a small ISP (MVP)",
+  "scripts": { "start": "node server.js" },
+  "engines": { "node": ">=18" }
+}
