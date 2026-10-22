@@ -16,10 +16,12 @@ app.use('/', portalRoutes);
 
 app.get('/api/payment-status', async (req, res, next) => {
   try {
-    const phone = req.query.phone;
-    if (!/^2547\d{8}$/.test(phone || '')) return res.status(400).json({ error: 'Invalid phone number.' });
+    const checkoutRequestId = req.query.checkoutRequestId;
+    if (typeof checkoutRequestId !== 'string' || !checkoutRequestId || checkoutRequestId.length > 200) {
+      return res.status(400).json({ error: 'A valid checkoutRequestId is required.' });
+    }
     const Payment = require('./models/Payment');
-    const payment = await Payment.findOne({ phone }).sort({ createdAt: -1 }).select('status').lean();
+    const payment = await Payment.findOne({ checkoutRequestId }).select('status').lean();
     if (!payment) return res.status(404).json({ error: 'No payment request found.' });
     res.json({ status: payment.status });
   } catch (error) { next(error); }

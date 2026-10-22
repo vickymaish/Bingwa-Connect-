@@ -71,9 +71,9 @@
       setTimeout(() => $('#phone').focus(), 30);
     }
 
-    async function pollPayment(phone) {
+    async function pollPayment(checkoutRequestId) {
       try {
-        const response = await fetch(`/api/payment-status?phone=${encodeURIComponent(phone)}`, { cache: 'no-store' });
+        const response = await fetch(`/api/payment-status?checkoutRequestId=${encodeURIComponent(checkoutRequestId)}`, { cache: 'no-store' });
         if (!response.ok) return;
         const result = await response.json();
         if (result.status === 'paid') {
@@ -119,8 +119,9 @@
         if (!response.ok) throw new Error(registrationComplete && !renewalMode
           ? `Your account is created, but payment could not start: ${result.error || 'Please try again.'} You can retry.`
           : result.error || 'Could not start payment. Please try again.');
+        if (!result.checkoutRequestId) throw new Error('M-Pesa did not return a payment reference. Please try again.');
         showView('wait-view');
-        pollTimer = setInterval(() => pollPayment(phone), 3000);
+        pollTimer = setInterval(() => pollPayment(result.checkoutRequestId), 3000);
         timeoutTimer = setTimeout(() => {
           stopPolling();
           $('#failure-message').textContent = 'We have not received confirmation yet. If money was deducted, contact support with your M-Pesa message.';
