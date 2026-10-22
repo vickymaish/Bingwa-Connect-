@@ -2,7 +2,7 @@ const express = require('express');
 const Customer = require('../models/Customer');
 const Payment = require('../models/Payment');
 const { PLANS, initiateStkPush } = require('../services/mpesa');
-const { sendSms } = require('../services/sms');
+const { activatePendingPayment } = require('../services/payment-reconciliation');
 
 const router = express.Router();
 const PHONE_PATTERN = /^2547\d{8}$/;
@@ -62,25 +62,14 @@ router.post('/mpesa/callback', async (req, res, next) => {
     const paidAmount = Number(valueFor('Amount'));
     const receiptNumber = valueFor('MpesaReceiptNumber');
     const receipt = await Payment.updateOne({ _id: payment._id, status: 'pending', amount: paidAmount }, {
-      $set: { status: 'paid', receiptNumber, paidAt: new Date(), resultDescription: callback.ResultDesc }
+      $set: { status: 'paid_pending_activation', receiptNumber, paidAt: new Date(), resultDescription: callback.ResultDesc }
     });
     if (!receipt.modifiedCount) {
       console.error(`Payment callback amount mismatch or duplicate for ${callback.CheckoutRequestID}`);
       return;
     }
 
-    const customer = await Customer.findOne({ phone: payment.phone });
-    if (!customer) return;
-    const now = new Date();
-    const currentActiveExpiry = customer.status === 'active' && customer.expiresAt > now ? customer.expiresAt : now;
-    const expiresAt = new Date(currentActiveExpiry.getTime() + PLANS[payment.plan].days * 24 * 60 * 60 * 1000);
-    customer.plan = payment.plan;
-    customer.status = 'active';
-    customer.expiresAt = expiresAt;
-    customer.expiryReminderSentAt = null;
-    await customer.save();
-    const date = new Intl.DateTimeFormat('en-KE', { timeZone: 'Africa/Nairobi', dateStyle: 'medium' }).format(expiresAt);
-    await sendSms(customer.phone, `Hello ${customer.name}, your ${payment.plan} internet is now active until ${date}. Enjoy!`);
+    await activatePendingPayment(payment._id);
   } catch (error) {
     // The callback already received its 200 response; log safe fields only and
     // avoid passing a possibly credential-bearing Axios object to Express.

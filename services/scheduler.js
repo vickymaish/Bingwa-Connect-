@@ -2,6 +2,7 @@ const cron = require('node-cron');
 const Customer = require('../models/Customer');
 const { PLANS } = require('./mpesa');
 const { sendSms } = require('./sms');
+const { reconcilePendingActivations } = require('./payment-reconciliation');
 
 function dateText(date) {
   return new Intl.DateTimeFormat('en-KE', {
@@ -41,6 +42,8 @@ function startScheduler() {
             `Hi ${customer.name}, your internet expires tomorrow. Dial *384*# or visit ${portalUrl} to renew.`);
         }
       }
+
+      await reconcilePendingActivations();
     } catch (error) {
       console.error('Expiry scheduler failed:', error);
     }

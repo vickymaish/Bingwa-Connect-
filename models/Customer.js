@@ -28,6 +28,8 @@ const customerSchema = new mongoose.Schema({
   expiresAt: { type: Date, default: null, index: true },
   // Prevent hourly scheduler runs from sending the same reminder more than once.
   expiryReminderSentAt: { type: Date, default: null },
+  // Payment IDs are retained so recovery cannot extend one payment twice.
+  activatedPaymentIds: { type: [mongoose.Schema.Types.ObjectId], default: [] },
   createdAt: { type: Date, default: Date.now, immutable: true }
 }, { versionKey: false });
 

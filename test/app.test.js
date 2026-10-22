@@ -190,16 +190,16 @@ test('payment polling identifies a specific checkout request', async () => {
 test('callback activation failure remains recoverable and can be retried', async () => {
   const customer = await createCustomer();
   await createPendingPayment('save-failure');
-  const originalSave = Customer.prototype.save;
-  Customer.prototype.save = function saveWithFailure(...args) {
-    if (this.id === customer.id) return Promise.reject(new Error('simulated customer write failure'));
-    return originalSave.apply(this, args);
+  const originalUpdateOne = Customer.collection.updateOne;
+  Customer.collection.updateOne = function failCustomerWrite(filter, ...args) {
+    if (filter.phone === customer.phone) return Promise.reject(new Error('simulated customer write failure'));
+    return originalUpdateOne.call(this, filter, ...args);
   };
   try {
     await sendCallback('save-failure');
-    await waitFor(async () => (await Payment.findOne({ checkoutRequestId: 'save-failure' }))?.status !== 'pending');
+    await waitFor(async () => (await Payment.findOne({ checkoutRequestId: 'save-failure' }))?.status === 'paid_pending_activation');
   } finally {
-    Customer.prototype.save = originalSave;
+    Customer.collection.updateOne = originalUpdateOne;
   }
 
   const pending = await Payment.findOne({ checkoutRequestId: 'save-failure' });

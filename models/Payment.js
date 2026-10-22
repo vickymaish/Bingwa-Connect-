@@ -7,7 +7,7 @@ const paymentSchema = new mongoose.Schema({
   checkoutRequestId: { type: String, unique: true, sparse: true, index: true },
   merchantRequestId: String,
   receiptNumber: { type: String, sparse: true, unique: true },
-  status: { type: String, enum: ['pending', 'paid', 'failed'], default: 'pending', index: true },
+  status: { type: String, enum: ['pending', 'paid_pending_activation', 'paid', 'failed'], default: 'pending', index: true },
   resultDescription: String,
   paidAt: Date
 }, { timestamps: true });
