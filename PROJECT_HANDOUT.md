@@ -1,120 +1,183 @@
-# ISP Project Status Handout
+# ISP App Review and Hardening Report
 
 **Review date:** 22 October 2026  
 **Workspace:** `C:\dev\internet`
 
-## Executive summary
+This report uses the requested labels throughout: **VERIFIED** means a command or request was run and its output is shown; **CODE-READ ONLY** means the finding comes from reading code; **NOT TESTED** means no runtime verification was performed.
 
-There are two different ISP applications in this folder. The root project is the more complete system: it has a customer portal, an Express API, MongoDB records, Daraja STK Push integration, SMS hooks, and an expiry scheduler. Its frontend is `public/portal.html`, served at `/portal`. The second project at `isp-mvp/isp-mvp/` is a standalone landing page and payment demo with a separate lightweight server. The root server does not serve or call the nested project.
+## Summary
 
-The root code parses successfully and its dependencies are installed. That confirms the code is syntactically loadable, not that a database, M-Pesa, SMS, callback, or router connection works. No test script is defined, and no end-to-end or live-provider test was run in this review.
+**VERIFIED:** The main application is the project at the workspace root. Its portal is `public/portal.html`, served at `/portal`. The independent `isp-mvp/isp-mvp/` folder is a separate demo and was not modified.
 
-## Which project is the current app?
+**VERIFIED:** A baseline Git commit was created before code changes. The `.env` file was excluded from the baseline and no `.env` values were printed or committed.
 
-| Path | What it is | How to start | State |
-| --- | --- | --- | --- |
-| `index.js` + `routes/`, `services/`, `models/`, `public/` | Main customer management and renewal application | `npm start` from workspace root | Requires MongoDB and configured environment variables. Portal: `http://localhost:3000/portal`. |
-| `isp-mvp/isp-mvp/server.js` + `public/` | Independent marketing site and simulated/Daraja checkout prototype | `node server.js` from `isp-mvp/isp-mvp` | Defaults to demo mode without its own Daraja settings. It does not use the root MongoDB customer system. |
+**VERIFIED:** The test suite now passes **24/24** using `mongodb-memory-server`. Daraja HTTP calls are mocked with Nock and all other outbound HTTP is blocked during tests. JavaScript syntax checks pass.
 
-The root frontend is a single static HTML page with inline CSS and JavaScript, not a separate React/Vite app. There is no admin dashboard UI; customer/admin operations are API-only.
+**NOT TESTED:** This does not verify a real MongoDB deployment, real Safaricom STK Push/callback delivery, Africa's Talking SMS, or actual internet access through a router/controller.
 
-## What has been built in the main app
+## Project map
 
-### Customer portal
-
-- Presents weekly (KES 300 / 7 days) and monthly (KES 999 / 30 days) plans.
-- Provides a signup path and an existing-customer renewal path.
-- Signup records are created as expired until payment succeeds.
-- Requests an M-Pesa STK prompt and polls payment status while the customer approves it.
-- Shows success/failure states and a timeout message.
-
-### API and stored data
-
-- Customer registration and customer create/list/read/suspend endpoints.
-- Dashboard counts for total, active, expired, and suspended customers.
-- Payment initiation and Daraja callback endpoints.
-- Mongoose customer and payment models with unique phone/MAC and payment identifiers.
-- Validation for phone numbers, MAC addresses, plans, and customer status.
-
-### Payment, notifications, and expiry
-
-- Daraja sandbox/production base URL selection, token retrieval, Nairobi timestamp generation, and STK request construction.
-- Successful callbacks check the expected payment amount, mark payment paid, and extend the customer's entitlement.
-- Repeated callbacks for a payment already processed do not extend the plan again.
-- Optional Africa's Talking SMS for successful payment, upcoming expiry, and expired service.
-- Hourly expiry processing and a reminder window around one day before expiry.
-
-### Standalone prototype
-
-- Editable brand, plan, pricing, and contact data in `isp-mvp/isp-mvp/public/site.json`.
-- Demo payment simulation after a few seconds, or Daraja mode when that prototype's separate environment variables are supplied.
-- This prototype describes itself as not having accounts, a database, or router activation. Its capabilities and API are separate from the root app.
-
-## What was actually checked
-
-- Root and nested JavaScript files passed `node --check` syntax checks.
-- `npm.cmd ls --depth=0` found the root dependencies installed (Express, Mongoose, Axios, Africa's Talking, dotenv, and node-cron).
-- Node.js 24.19.0 is installed; the root package requires Node 20 or newer.
-- The root `package.json` defines `start` and `dev`, but no test, lint, or build command.
-- The workspace root is not a Git repository, so this review could not establish commit history or uncommitted changes.
-- I did not inspect or reproduce values from `.env`.
-
-## What works versus what remains unverified
-
-| Area | Code-level status | Runtime status |
+| Label | Path | Purpose and current state |
 | --- | --- | --- |
-| Portal page | Implemented and wired to the root routes | Not opened in a browser during this review. |
-| Customer APIs | Implemented with validation and MongoDB calls | Requires MongoDB; no DB request was run. |
-| Daraja STK Push | Implemented; fails fast for a missing/invalid HTTPS callback URL | Not verified against Safaricom sandbox or production. Needs matching credentials and a publicly reachable callback URL. |
-| Callback activation | Implemented, including amount matching and duplicate protection | Not exercised with a real or replayed callback. |
-| SMS | Optional integration; missing key skips SMS | No Africa's Talking request was made. |
-| Expiry scheduler | Hourly cron job is registered after database connection | Not observed running against data. It changes entitlement records but does not control network equipment. |
-| Router/network access | No router/RADIUS/controller integration found | Customer status alone does not turn internet access on or off. |
-| Nested demo | Demo and separate Daraja flows are implemented | Not started; not part of the root app. |
+| **CODE-READ ONLY** | `index.js`, `routes/`, `services/`, `models/`, `public/` | Main Express/MongoDB ISP customer and payment app. Portal is `http://localhost:3000/portal` after startup. |
+| **CODE-READ ONLY** | `isp-mvp/isp-mvp/` | Separate Zuri Net landing page/payment prototype with its own server, plans, settings, and payment storage. It defaults to simulated checkout when its own Daraja credentials are absent. It has no customer accounts, database, or router activation. |
 
-## Known gaps and break risks
+The main frontend is one static HTML file with inline CSS and JavaScript. There is no admin dashboard UI; admin functions are API-only.
 
-### High priority before public use
+## Environment variables read by the root app
 
-1. **Admin/customer routes have no authentication or authorization.** `GET /api/customers`, `POST /api/customers`, `GET /api/dashboard`, and suspension are exposed without an admin login. The create endpoint also accepts an `active` status. A public deployment could expose customer personal data or allow unauthorized entitlement changes.
-2. **The app does not connect entitlement state to the ISP network.** Payment changes the database status and expiry date only. A router, RADIUS service, or network access controller must be integrated before payment can actually restore service automatically.
-3. **Callback processing can record payment without activating service.** The callback immediately returns success to Daraja, then processes asynchronously. It marks the payment paid before saving the customer activation. If the later customer lookup/save fails, the callback has already been acknowledged and the paid record prevents a duplicate callback from retrying activation. Add a recoverable transaction/outbox or reconciliation path.
-4. **Payment polling identifies the newest payment by phone, not by checkout request.** If a customer starts another payment before the first callback arrives, `/api/payment-status?phone=...` can return the newer attempt's state. Poll by the specific checkout request ID instead.
+**CODE-READ ONLY:** These names were found in the root app code. No `.env` values were inspected or reproduced.
 
-### Operational gaps
-
-- Root startup requires `MONGODB_URI`; it exits if unset or if MongoDB cannot be reached. Daraja is only contacted when a user requests payment, but then the sandbox/production credentials, shortcode, passkey, and public HTTPS callback must be configured correctly.
-- The callback URL must be reachable from Safaricom. A local-only URL will not receive callbacks. A failed callback can leave the portal waiting until timeout even when the user paid.
-- SMS is best-effort and can be skipped when `AT_API_KEY` is unset. SMS failure does not undo the payment or expiry update.
-- The nested prototype is particularly unsuitable as the production system: it stores active payment state in memory, uses an append-only log for records, loses in-memory state after restart, and its README notes there is no customer account or automatic router activation. It also has a default callback secret that must be replaced if using Daraja mode.
-- Neither app has an admin web interface, login flow, automated test suite, or deployment configuration in the reviewed files.
-
-## Main endpoints in the root app
-
-| Method | Endpoint | Purpose |
+| Variable name | Required? | Behavior when missing |
 | --- | --- | --- |
-| GET | `/portal` | Customer plan and payment page |
-| POST | `/api/register` | Public customer signup |
-| POST | `/api/pay` | Start an STK Push for an existing phone/account |
-| POST | `/api/mpesa/callback` | Receive Daraja payment result |
-| GET | `/api/payment-status?phone=...` | Portal polling endpoint (currently latest payment per phone) |
-| GET/POST | `/api/customers` | List/create customer records |
-| GET | `/api/customers/:id` | Read one customer |
-| PATCH | `/api/customers/:id/suspend` | Suspend a customer |
-| GET | `/api/dashboard` | Customer status counts |
+| `MONGODB_URI` | Yes, for startup | `start()` throws; startup logs an error and exits with code 1. |
+| `PORT` | No | Defaults to port `3000`. |
+| `ADMIN_API_KEY` | Required to use admin/customer-management endpoints | App still starts, but those endpoints return 503 when the key is not configured. Requests without a matching `x-api-key` return 401. |
+| `MPESA_ENV` | No | Defaults to sandbox. Only the exact value `production` selects production URLs and production credentials; other values select sandbox. |
+| `MPESA_SANDBOX_CONSUMER_KEY` | Required for sandbox payment requests | Missing configuration causes a payment request to fail at runtime; the payment is marked failed and the API returns an error. |
+| `MPESA_SANDBOX_CONSUMER_SECRET` | Required for sandbox payment requests | Same runtime behavior as the sandbox consumer key. |
+| `MPESA_PRODUCTION_CONSUMER_KEY` | Required when `MPESA_ENV=production` | Missing configuration causes a payment request to fail at runtime. |
+| `MPESA_PRODUCTION_CONSUMER_SECRET` | Required when `MPESA_ENV=production` | Missing configuration causes a payment request to fail at runtime. |
+| `MPESA_SHORTCODE` | Required for payment requests | Missing configuration causes the request to fail at runtime. |
+| `MPESA_PASSKEY` | Required for payment requests | Missing configuration causes the request to fail at runtime. |
+| `MPESA_CALLBACK_URL` | Required for payment requests | Missing configuration causes the request to fail at runtime. A malformed or non-HTTPS URL is rejected with 503. The configured URL must be publicly reachable by Safaricom. |
+| `AT_API_KEY` | No | SMS is skipped and a warning is logged. |
+| `AT_USERNAME` | No | Defaults to `sandbox` when SMS is enabled. |
+| `AT_SENDER_ID` | No | Africa's Talking request omits the sender ID. |
+| `PORTAL_URL` | No | Reminder SMS uses the text “the customer portal” instead of a URL. |
 
-## Suggested next steps
+## What changed
 
-1. Decide whether the nested Zuri Net demo should be archived or treated as a separate product; it currently has different plans, branding, API behavior, and payment storage.
-2. Add admin authentication and access control before exposing customer-management endpoints publicly.
-3. Change payment polling to use a checkout request ID and make callback-to-activation recoverable.
-4. Connect activation and expiry/suspension to the actual network access system.
-5. Add automated checks for registration, payment callback success/failure/duplicate/amount mismatch, expiry, and polling; then verify against Daraja sandbox and a publicly reachable HTTPS callback.
+| Area | Change |
+| --- | --- |
+| Admin API | Added `ADMIN_API_KEY` authentication via the `x-api-key` header for customer list/create/read/suspend and dashboard endpoints. Comparison uses `timingSafeEqual`. Missing configuration fails closed with 503. Public signup still creates an expired account and ignores any client-supplied status. |
+| Payment polling | `/api/pay` returns a `checkoutRequestId`; the portal now polls `/api/payment-status?checkoutRequestId=...`. The old phone-based lookup was removed so parallel attempts cannot report another checkout's state. |
+| Payment callback recovery | A successful amount-matched callback first stores `paid_pending_activation`. Entitlement application uses a payment ID marker in the customer document, then marks the payment `paid`. The hourly scheduler retries pending activations. A duplicate callback or reconciliation pass will not extend a payment twice. |
+| Network access seam | Added `services/network.js` with `activate(customer)` and `deactivate(customer)` stubs. Activation, expiry, and suspension call the relevant stub. The stubs only log the customer ID and requested action; they do not control a router, RADIUS server, or actual internet service. |
+| Privacy | Network stub logs omit customer phone numbers. |
+| Tests | Added `npm test` using Node's built-in test runner, `mongodb-memory-server`, Supertest, and Nock. |
 
-## Files to start with
+## Baseline verification and regression results
 
-- Main server and routes: `index.js`, `routes/customers.js`, `routes/payment.js`
-- Portal UI: `public/portal.html`
-- Database schemas: `models/Customer.js`, `models/Payment.js`
-- Payment and background jobs: `services/mpesa.js`, `services/scheduler.js`, `services/sms.js`
-- Separate prototype: `isp-mvp/isp-mvp/README.md`, `isp-mvp/isp-mvp/server.js`, `isp-mvp/isp-mvp/public/index.html`
+### Initial HTTP run
+
+**VERIFIED:** The app was served from an ephemeral local HTTP port with an isolated in-memory MongoDB. These are the actual pre-fix responses:
+
+```text
+GET /portal                                      -> 200 text/html
+GET /api/dashboard                               -> 200 {"total":0,"active":0,"expired":0,"suspended":0}
+GET /api/customers (no auth)                     -> 200 []
+POST /api/customers status=active (no auth)       -> 201 {"status":"active", ...}
+GET /api/customers/:id (no auth)                 -> 200
+PATCH /api/customers/:id/suspend (no auth)        -> 200 {"status":"suspended", ...}
+```
+
+### Before and after tests
+
+**VERIFIED:** The first regression run against the pre-fix code produced **20 tests, 12 passed, 8 failed**. The eight failures were the five unauthenticated admin routes, checkout-specific polling, and callback activation recovery. The registration, callback result handling, and scheduler checks passed at baseline.
+
+| Issue | Before: failing test output | Fix | After: passing test output | Status |
+| --- | --- | --- | --- | --- |
+| Unauthenticated admin access | Five assertions got `200` (customer reads/dashboard/suspend) or `201` (customer create); active customer creation was possible. | Admin key middleware on all five management/dashboard routes; public registration always writes `expired`. | `✔` five anonymous route checks rejected; configured key accepted; missing key returned 503. | **VERIFIED** |
+| Polling concurrent payment attempts | Checkout ID query expected 200 but got `400`; endpoint only accepted phone and selected the latest payment. | Poll by the returned checkout request ID; removed phone lookup. | `✔ payment polling identifies a specific checkout request`. | **VERIFIED** |
+| Callback write failure | Injected customer write failure left payment `paid`; expected recoverable `paid_pending_activation`. | Persist intermediate state, per-payment idempotency marker, and hourly reconciliation. | `✔ callback activation failure remains recoverable and can be retried`. | **VERIFIED** |
+| Callback result handling | Baseline tests passed. | Kept amount matching, failure handling, unknown callback acknowledgement, and duplicate protection while changing activation flow. | `✔` success/duplicate, amount mismatch, cancelled result, and unknown checkout tests. | **VERIFIED** |
+| Registration validation | Baseline tests passed. | No behavior change required; continued checking phone, MAC, plan, and duplicate handling. | `✔` malformed phone/MAC/plan and duplicate phone/MAC checks. | **VERIFIED** |
+| Expiry and reminder scheduler | Baseline tests passed. | Added network deactivation call on expiry; reminder remains guarded by `expiryReminderSentAt`. | `✔ scheduler expires customers and sends a reminder once in the one-day window`. | **VERIFIED** |
+| Network activation/deactivation stubs | No stub existed at baseline. | Added calls on activation, expiry, and suspension. | `✔` activation, expiry, suspension, and phone-free log tests. | **VERIFIED** |
+
+### Latest verification output
+
+**VERIFIED:** The last complete test run returned:
+
+```text
+ℹ tests 24
+ℹ pass 24
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+```
+
+**VERIFIED:** JavaScript syntax checks returned `SYNTAX_CHECKS=PASS` for `index.js`, customer/payment routes, reconciliation, network, and scheduler files.
+
+## Remaining risks and untested work
+
+### Not tested
+
+- **NOT TESTED:** Real Safaricom sandbox STK Push. Tests use mocked HTTP; no Daraja credentials were used. The sandbox must only be exercised after confirming the configured credentials are sandbox credentials.
+- **NOT TESTED:** Delivery to a publicly reachable HTTPS callback URL. A local mock callback does not prove Safaricom can reach the deployed callback.
+- **NOT TESTED:** Real Africa's Talking SMS. Test configuration disables SMS and no SMS was sent.
+- **NOT TESTED:** Router/RADIUS/network access. The new interface is a logging stub only; this app still does not enable or disable real internet access.
+- **NOT TESTED:** Production deployment, real MongoDB topology, backup/restore, concurrency across multiple app instances, or browser-based visual behavior.
+- **NOT TESTED:** `npm audit --omit=dev` details. Package installation reported 6 advisories (2 moderate, 4 high), but the audit endpoint could not be reached, so affected packages and production impact are unknown.
+
+### Additional risks found by code reading
+
+- **CODE-READ ONLY:** `MPESA_CALLBACK_URL` validation checks HTTPS and rejects localhost/example hosts, but it does not verify the URL path is `/api/mpesa/callback` or prove external reachability. A valid HTTPS URL with the wrong path can lose callbacks.
+- **CODE-READ ONLY:** Reminder and expiry SMS failures are swallowed by `sendSms`. The reminder timestamp is set before sending, and expired status is saved before its SMS; a failed send is not automatically retried.
+- **CODE-READ ONLY:** `activatedPaymentIds` grows by one ID per activated payment to preserve idempotency across retries. This should be monitored for unusually high-renewal accounts and revisited if customer documents approach MongoDB's document-size limit.
+- **CODE-READ ONLY:** The admin API key is a shared secret. Use HTTPS, keep it out of source control, and rotate it through deployment configuration. There is no admin login UI or per-user audit trail.
+- **CODE-READ ONLY:** The callback acknowledges Daraja before processing. The durable intermediate payment state and hourly retry now make activation recoverable, but retry can be delayed until the next scheduler run after a failure.
+- **CODE-READ ONLY:** The nested prototype remains separate and unsuitable as the root system's production backend: it keeps active payment state in memory, writes an append-only payment log, and has no accounts or automated router activation. It was not changed.
+
+## Commands
+
+### Install
+
+```powershell
+npm.cmd install
+```
+
+The test dependencies are installed as development dependencies. If npm blocks the in-memory MongoDB package's setup script on a fresh machine, approve and rebuild that package with:
+
+```powershell
+npm.cmd approve-scripts mongodb-memory-server
+npm.cmd rebuild mongodb-memory-server
+```
+
+### Configure
+
+Keep `.env` local and out of Git. Set these **variable names** in the existing `.env` file:
+
+```text
+MONGODB_URI
+ADMIN_API_KEY
+MPESA_ENV
+MPESA_SANDBOX_CONSUMER_KEY
+MPESA_SANDBOX_CONSUMER_SECRET
+MPESA_PRODUCTION_CONSUMER_KEY
+MPESA_PRODUCTION_CONSUMER_SECRET
+MPESA_SHORTCODE
+MPESA_PASSKEY
+MPESA_CALLBACK_URL
+AT_API_KEY
+AT_USERNAME
+AT_SENDER_ID
+PORT
+PORTAL_URL
+```
+
+Only the credential pair for the selected `MPESA_ENV` is needed. SMS variables are optional. Never commit `.env`.
+
+### Run tests and app
+
+```powershell
+npm.cmd test
+npm.cmd start
+```
+
+Open `http://localhost:3000/portal`. Admin API calls must include `x-api-key` matching `ADMIN_API_KEY`; public signup, payment, callback, status polling, and portal routes remain public.
+
+## Commit history
+
+**VERIFIED:** These commits were created in order; the initial baseline excludes `.env`.
+
+| Commit | Message |
+| --- | --- |
+| `d12b3bf` | `chore: baseline before ISP app hardening` |
+| `bc3f49c` | `test: add failing ISP hardening regressions` |
+| `4f1d51a` | `fix: protect customer management with admin key` |
+| `1b232f9` | `fix: poll payment by checkout request ID` |
+| `873bb13` | `fix: reconcile payment activation failures safely` |
+| `738a6a8` | `feat: invoke network access stubs on entitlement changes` |
+| `9b19376` | `fix: omit phone numbers from network stub logs` |
