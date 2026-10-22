@@ -3,6 +3,7 @@ const Customer = require('../models/Customer');
 const { PLANS } = require('./mpesa');
 const { sendSms } = require('./sms');
 const { reconcilePendingActivations } = require('./payment-reconciliation');
+const network = require('./network');
 
 function dateText(date) {
   return new Intl.DateTimeFormat('en-KE', {
@@ -21,6 +22,7 @@ function startScheduler() {
           { $set: { status: 'expired' } }
         );
         if (update.modifiedCount) {
+          await network.deactivate(customer);
           await sendSms(customer.phone,
             `Hi ${customer.name}, your internet has expired. Pay KES ${PLANS[customer.plan].amount} to reconnect.`);
         }

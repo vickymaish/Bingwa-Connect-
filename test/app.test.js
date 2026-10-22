@@ -7,6 +7,7 @@ const nock = require('nock').default;
 const request = require('supertest');
 const cron = require('node-cron');
 const { MongoMemoryServer } = require('mongodb-memory-server');
+const network = require('../services/network');
 
 // Test-only credentials and callback destination. All outbound HTTP is blocked
 // except explicit Daraja mocks below; no real provider call can be made.
@@ -215,13 +216,21 @@ test('successful callback activates and extends exactly once; duplicate callback
   const expiresAt = new Date(Date.now() + 2 * 24 * 60 * 60 * 1000);
   const customer = await createCustomer({ status: 'active', expiresAt });
   await createPendingPayment('success-once');
-  await sendCallback('success-once');
-  await waitFor(async () => (await Payment.findOne({ checkoutRequestId: 'success-once' }))?.status === 'paid');
-  const firstExpiry = (await Customer.findById(customer.id)).expiresAt;
-  assert.ok(firstExpiry > expiresAt);
-  await sendCallback('success-once');
-  await new Promise((resolve) => setTimeout(resolve, 30));
-  assert.equal((await Customer.findById(customer.id)).expiresAt.getTime(), firstExpiry.getTime());
+  const originalActivate = network.activate;
+  let activationCalls = 0;
+  network.activate = async () => { activationCalls += 1; };
+  try {
+    await sendCallback('success-once');
+    await waitFor(async () => (await Payment.findOne({ checkoutRequestId: 'success-once' }))?.status === 'paid');
+    const firstExpiry = (await Customer.findById(customer.id)).expiresAt;
+    assert.ok(firstExpiry > expiresAt);
+    await sendCallback('success-once');
+    await new Promise((resolve) => setTimeout(resolve, 30));
+    assert.equal((await Customer.findById(customer.id)).expiresAt.getTime(), firstExpiry.getTime());
+    assert.equal(activationCalls, 1);
+  } finally {
+    network.activate = originalActivate;
+  }
 });
 
 test('amount mismatch does not activate the customer', async () => {
@@ -280,16 +289,43 @@ test('scheduler expires customers and sends a reminder once in the one-day windo
     phone: '254712345679', macAddress: '02:00:00:00:00:02', status: 'active',
     expiresAt: new Date(Date.now() + 24 * 60 * 60 * 1000)
   });
-  await schedulerTask();
-  assert.equal((await Customer.findById(expired.id)).status, 'expired');
-  assert.ok((await Customer.findById(reminder.id)).expiryReminderSentAt);
-  const reminderSentAt = (await Customer.findById(reminder.id)).expiryReminderSentAt;
-  await schedulerTask();
-  assert.equal((await Customer.findById(reminder.id)).expiryReminderSentAt.getTime(), reminderSentAt.getTime());
+  const originalDeactivate = network.deactivate;
+  const deactivated = [];
+  network.deactivate = async (customer) => { deactivated.push(String(customer._id)); };
+  try {
+    await schedulerTask();
+    assert.equal((await Customer.findById(expired.id)).status, 'expired');
+    assert.deepEqual(deactivated, [expired.id]);
+    assert.ok((await Customer.findById(reminder.id)).expiryReminderSentAt);
+    const reminderSentAt = (await Customer.findById(reminder.id)).expiryReminderSentAt;
+    await schedulerTask();
+    assert.equal((await Customer.findById(reminder.id)).expiryReminderSentAt.getTime(), reminderSentAt.getTime());
+    assert.deepEqual(deactivated, [expired.id]);
+  } finally {
+    network.deactivate = originalDeactivate;
+  }
+});
+
+test('admin suspension requests network deactivation through the stub', async () => {
+  const customer = await createCustomer({ status: 'active' });
+  const originalDeactivate = network.deactivate;
+  let deactivatedId;
+  network.deactivate = async (entry) => { deactivatedId = String(entry._id); };
+  try {
+    const response = await request(app).patch(`/api/customers/${customer.id}/suspend`)
+      .set('x-api-key', process.env.ADMIN_API_KEY).send({});
+    assert.equal(response.status, 200);
+    assert.equal(response.body.status, 'suspended');
+    assert.equal(deactivatedId, customer.id);
+  } finally {
+    network.deactivate = originalDeactivate;
+  }
 });
 
 test('public portal and payment routes remain public', async () => {
   assert.equal((await request(app).get('/portal')).status, 200);
   const registration = await request(app).post('/api/register').send(sampleCustomer());
   assert.equal(registration.status, 201);
+  const registered = await Customer.findOne({ phone: '254712345678' });
+  assert.equal(registered.status, 'expired');
 });

@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Customer = require('../models/Customer');
 const { adminAuth } = require('../middleware/admin-auth');
+const network = require('../services/network');
 
 const router = express.Router();
 const PHONE_PATTERN = /^2547\d{8}$/;
@@ -72,6 +73,7 @@ router.patch('/customers/:id/suspend', adminAuth, async (req, res, next) => {
     if (!mongoose.isValidObjectId(req.params.id)) return res.status(400).json({ error: 'Invalid customer ID.' });
     const customer = await Customer.findByIdAndUpdate(req.params.id, { $set: { status: 'suspended' } }, { new: true, runValidators: true });
     if (!customer) return res.status(404).json({ error: 'Customer not found.' });
+    await network.deactivate(customer);
     res.json(customer);
   } catch (error) { next(error); }
 });
