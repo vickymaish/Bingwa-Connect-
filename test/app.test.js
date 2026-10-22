@@ -322,6 +322,21 @@ test('admin suspension requests network deactivation through the stub', async ()
   }
 });
 
+test('network stubs log the customer ID without logging the phone number', async () => {
+  const customer = await createCustomer();
+  const originalInfo = console.info;
+  let output = '';
+  console.info = (...args) => { output += args.map((arg) => typeof arg === 'string' ? arg : JSON.stringify(arg)).join(' '); };
+  try {
+    await network.activate(customer);
+    await network.deactivate(customer);
+  } finally {
+    console.info = originalInfo;
+  }
+  assert.match(output, new RegExp(customer.id));
+  assert.equal(output.includes(customer.phone), false);
+});
+
 test('public portal and payment routes remain public', async () => {
   assert.equal((await request(app).get('/portal')).status, 200);
   const registration = await request(app).post('/api/register').send(sampleCustomer());
