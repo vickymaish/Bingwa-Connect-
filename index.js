@@ -1,16 +1,38 @@
 require('dotenv').config();
 
 const express = require('express');
-const mongoose = require('mongoose');
+const { connectDb, syncDatabaseIndexes } = require('./services/db');
 const paymentRoutes = require('./routes/payment');
 const customerRoutes = require('./routes/customers');
 const portalRoutes = require('./routes/portal');
+const cronRoutes = require('./routes/cron');
 const { startScheduler } = require('./services/scheduler');
 const { checkConnection } = require('./services/network');
 
 const app = express();
 app.disable('x-powered-by');
 app.use(express.json({ limit: '32kb' }));
+
+// Public settings the page needs (till, support contacts). No secrets here.
+app.get('/api/config', (req, res) => {
+  res.set('Cache-Control', 'public, max-age=300');
+  res.json({
+    tillNumber: (process.env.TILL_NUMBER || '').replace(/\D/g, '') || '4134662',
+    tillName: (process.env.TILL_NAME || '').trim() || 'Emmanuel Bingwa',
+    supportPhone: (process.env.SUPPORT_PHONE || '').trim() || '+254 700 000 000',
+    whatsappNumber: (process.env.WHATSAPP_NUMBER || '').replace(/\D/g, '') || '254700000000'
+  });
+});
+app.get('/api/health', (req, res) => res.json({ ok: true }));
+
+// Every other /api route needs the database. Connect once and reuse (important on Vercel).
+app.use('/api', async (req, res, next) => {
+  try { await connectDb(); next(); } catch (error) {
+    console.error('Database connection failed:', { message: error.message });
+    res.status(503).json({ error: 'Service temporarily unavailable. Please try again shortly.' });
+  }
+});
+app.use('/api', cronRoutes);
 app.use('/api', paymentRoutes);
 app.use('/api', customerRoutes);
 app.use('/', portalRoutes);
@@ -61,23 +83,10 @@ app.use((error, req, res, next) => {
   res.status(status).json({ error: message });
 });
 
-// Make the database's indexes match the models. Removes leftovers from older versions,
-// e.g. a non-sparse unique macAddress index that lets only ONE customer exist without a MAC.
-async function syncDatabaseIndexes() {
-  for (const model of [require('./models/Customer'), require('./models/Payment')]) {
-    try {
-      const dropped = await model.syncIndexes();
-      if (dropped.length) console.log(`Database: replaced outdated ${model.modelName} indexes: ${dropped.join(', ')}`);
-    } catch (error) {
-      console.error(`Database: could not update ${model.modelName} indexes:`, { message: error.message, code: error.code });
-    }
-  }
-}
-
 const port = Number(process.env.PORT) || 3000;
 async function start() {
   if (!process.env.MONGODB_URI) throw new Error('MONGODB_URI is required. Copy .env.example to .env and configure it.');
-  await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
+  await connectDb();
   await syncDatabaseIndexes();
   startScheduler();
   app.listen(port, () => console.log(`ISP customer system listening on port ${port}`));
@@ -91,6 +100,8 @@ async function start() {
   (router.ok ? console.log : console.error)(line);
 }
 
+// Locally: `npm start` runs a normal server with background jobs on a timer.
+// On Vercel: this file is imported, the app is exported, and jobs run via /api/cron/*.
 if (require.main === module) {
   start().catch((error) => { console.error('Application startup failed:', error); process.exit(1); });
 }

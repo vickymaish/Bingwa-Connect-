@@ -58,8 +58,9 @@ router.post('/pay', async (req, res, next) => {
 });
 
 router.post('/mpesa/callback', async (req, res) => {
-  // Daraja expects a prompt 200 response; process asynchronously below.
-  res.status(200).json({ ResultCode: 0, ResultDesc: 'Accepted' });
+  // Process first, reply last: on serverless hosts (Vercel) work done after the reply can be
+  // frozen half-way. Daraja always gets a 200 (see finally), and anything left unfinished is
+  // picked up by the background reconciliation (/api/cron/tick).
   try {
     const callback = req.body?.Body?.stkCallback;
     const checkoutRequestId = callback?.CheckoutRequestID;
@@ -111,6 +112,8 @@ router.post('/mpesa/callback', async (req, res) => {
     console.error('M-Pesa callback processing failed:', {
       name: error.name, message: error.message, code: error.code
     });
+  } finally {
+    if (!res.headersSent) res.status(200).json({ ResultCode: 0, ResultDesc: 'Accepted' });
   }
 });
 

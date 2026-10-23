@@ -1,6 +1,5 @@
 'use strict';
 
-const cron = require('node-cron');
 const Customer = require('../models/Customer');
 const { PLANS } = require('./mpesa');
 const { sendSms } = require('./sms');
@@ -62,7 +61,28 @@ async function sendExpiryReminders() {
   }
 }
 
+/**
+ * One pass of every background job. Safe to run as often as you like (all steps are idempotent).
+ * Locally it runs on a timer; on Vercel an external scheduler calls GET /api/cron/tick.
+ */
+async function runAllJobs() {
+  const results = {};
+  const step = async (name, job) => {
+    try { results[name] = (await job()) ?? 'ok'; } catch (error) {
+      results[name] = `failed: ${error.message}`;
+      console.error(`Background job "${name}" failed:`, safeError(error));
+    }
+  };
+  await step('stalePayments', () => reconcileStalePendingPayments());
+  await step('activations', () => reconcilePendingActivations());
+  await step('expiry', () => expireCustomers());
+  await step('reminders', () => sendExpiryReminders());
+  await step('router', () => syncAllAccess());
+  return results;
+}
+
 function startScheduler() {
+  const cron = require('node-cron');
   const tz = { timezone: 'Africa/Nairobi' };
   // Payments: resolve late/missing M-Pesa callbacks, finish activations, fix router drift.
   cron.schedule('*/2 * * * *', guarded('payments-and-router', async () => {
@@ -76,4 +96,4 @@ function startScheduler() {
   cron.schedule('7 * * * *', guarded('reminders', sendExpiryReminders), tz);
 }
 
-module.exports = { startScheduler, expireCustomers, sendExpiryReminders };
+module.exports = { startScheduler, runAllJobs, expireCustomers, sendExpiryReminders };

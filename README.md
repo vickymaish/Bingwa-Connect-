@@ -78,3 +78,20 @@ The payment-status endpoint uses `checkoutRequestId` returned by `/api/pay`, for
 - Bundle price list is hardcoded in public\portal.html (const BUNDLES); move to database + admin: TBD.
 - Home WiFi STK push runs on Daraja SANDBOX (no real money). Daraja Go Live for the client's till: TBD.
 - Final price list from client: TBD.
+
+## Deployment (Vercel)
+
+1. Run `npx vercel` the first time to create the project.
+2. In Vercel > Settings > Environment Variables, paste all values from `.env`. Set `MPESA_CALLBACK_URL=https://bingwaconnect.co.ke/api/mpesa/callback` and `PORTAL_URL=https://bingwaconnect.co.ke`.
+3. Run `npx vercel --prod`.
+4. In Vercel > Settings > Domains, add `bingwaconnect.co.ke` and `www.bingwaconnect.co.ke`, then copy the shown DNS records into the registrar's DNS settings.
+5. In MongoDB Atlas > Network Access, allow `0.0.0.0/0`.
+6. In cron-job.org, schedule a GET request every 2 minutes to `https://bingwaconnect.co.ke/api/cron/tick` with the header `Authorization: Bearer <CRON_SECRET>`.
+
+### TBD
+
+- Bundle STK push and automatic delivery.
+- Move bundle prices into the database.
+- Daraja Go Live for the till; home WiFi STK push currently uses SANDBOX and does not move real money.
+- Router access from the cloud.
+- Vercel Pro for commercial use.

@@ -322,12 +322,12 @@
         <div class="till-card reveal">
           <div>
             <span class="eyebrow">Lipa na M-Pesa · Buy Goods</span>
-            <p class="till-number">Till <strong>{{TILL_NUMBER}}</strong></p>
-            <p class="till-name">{{TILL_NAME}}</p>
+            <p class="till-number">Till <strong>4134662</strong></p>
+            <p class="till-name">Emmanuel Bingwa</p>
           </div>
           <ol class="till-steps">
             <li>M-Pesa → Lipa na M-Pesa → Buy Goods and Services</li>
-            <li>Till number <b>{{TILL_NUMBER}}</b></li>
+            <li>Till number <b>4134662</b></li>
             <li>Enter the <b>exact</b> price of your deal</li>
             <li>Enter your PIN and send</li>
           </ol>
@@ -481,13 +481,13 @@
         <button class="close-modal" type="button" data-close-bundle aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
       </div>
       <div class="pay-box">
-        <div class="pay-row"><span>Till number</span><strong>{{TILL_NUMBER}}</strong><button class="copy" type="button" data-copy="{{TILL_NUMBER}}">Copy</button></div>
+        <div class="pay-row"><span>Till number</span><strong>4134662</strong><button class="copy" type="button" data-copy="4134662">Copy</button></div>
         <div class="pay-row"><span>Exact amount</span><strong id="bundle-amount"></strong><button class="copy" type="button" id="copy-amount">Copy</button></div>
       </div>
       <ol class="pay-steps">
         <li>Open <b>M-Pesa</b> → <b>Lipa na M-Pesa</b></li>
         <li>Choose <b>Buy Goods and Services</b></li>
-        <li>Enter till <b>{{TILL_NUMBER}}</b> and the exact amount above</li>
+        <li>Enter till <b>4134662</b> and the exact amount above</li>
         <li>Enter your PIN. Your bundle arrives by SMS from Safaricom.</li>
       </ol>
       <p class="pay-note" id="bundle-note"></p>
@@ -495,6 +495,27 @@
     </div>
   </dialog>
 
+  <script>
+    // Fills 4134662, Emmanuel Bingwa, {{SUPPORT_PHONE}}, {{WHATSAPP_NUMBER}} from /api/config.
+    // Defaults render instantly; real values replace them as soon as the server answers.
+    (() => {
+      const defaults = { TILL_NUMBER: '4134662', TILL_NAME: 'Emmanuel Bingwa', SUPPORT_PHONE: '+254 700 000 000', WHATSAPP_NUMBER: '254700000000' };
+      const slots = [];
+      const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT);
+      for (let n = walker.nextNode(); n; n = walker.nextNode()) if (n.nodeValue.includes('{{')) slots.push({ node: n, tpl: n.nodeValue });
+      document.querySelectorAll('[href*="{{"], [data-copy*="{{"]').forEach((el) => {
+        ['href', 'data-copy'].forEach((attr) => { const v = el.getAttribute(attr); if (v && v.includes('{{')) slots.push({ el, attr, tpl: v }); });
+      });
+      const apply = (cfg) => slots.forEach((s) => {
+        const out = s.tpl.replace(/\{\{(\w+)\}\}/g, (m, k) => cfg[k] ?? m);
+        if (s.node) s.node.nodeValue = out; else s.el.setAttribute(s.attr, out);
+      });
+      apply(defaults);
+      fetch('/api/config').then((r) => r.ok ? r.json() : null).then((c) => {
+        if (c) apply({ TILL_NUMBER: c.tillNumber, TILL_NAME: c.tillName, SUPPORT_PHONE: c.supportPhone, WHATSAPP_NUMBER: c.whatsappNumber });
+      }).catch(() => {});
+    })();
+  </script>
   <script>
     // Header turns solid after scrolling; sections fade in once as they enter the screen.
     (() => {
