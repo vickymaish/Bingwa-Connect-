@@ -2,11 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const Customer = require('../models/Customer');
 const { adminAuth } = require('../middleware/admin-auth');
-const network = require('../services/network');
+const { normalizeMac } = require('../services/network');
+const { trySyncCustomerAccess } = require('../services/access-sync');
 
 const router = express.Router();
-const PHONE_PATTERN = /^2547\d{8}$/;
-const MAC_PATTERN = /^(?:[0-9A-Fa-f]{2}:){5}[0-9A-Fa-f]{2}$/;
+// Safaricom 07XX and 01XX numbers in international format.
+const PHONE_PATTERN = /^254(7|1)\d{8}$/;
 
 router.get('/customers', adminAuth, async (req, res, next) => {
   try {
@@ -15,28 +16,29 @@ router.get('/customers', adminAuth, async (req, res, next) => {
   } catch (error) { next(error); }
 });
 
-// Public customer onboarding. New accounts stay expired until a successful
-// M-Pesa callback activates the selected plan.
+// Public customer onboarding. New accounts stay expired until a confirmed
+// M-Pesa payment activates the selected plan. The device (MAC) is linked at
+// payment time, not here, so nobody can claim a device without paying for it.
 router.post('/register', async (req, res, next) => {
   try {
-    const { name, phone, macAddress, plan } = req.body;
+    const { name, phone, plan } = req.body;
     if (typeof name !== 'string' || !name.trim() || name.trim().length > 120 ||
-        !PHONE_PATTERN.test(phone || '') ||
-        (macAddress !== undefined && macAddress !== '' && !MAC_PATTERN.test(macAddress)) ||
+        typeof phone !== 'string' || !PHONE_PATTERN.test(phone) ||
         !['weekly', 'monthly'].includes(plan)) {
-      return res.status(400).json({ error: 'Enter your name, phone in 2547XXXXXXXX format, and a valid plan.' });
+      return res.status(400).json({ error: 'Enter your name, phone in 2547XXXXXXXX or 2541XXXXXXXX format, and a valid plan.' });
     }
-    const customer = await Customer.create({
-      name: name.trim(), phone,
-      ...(macAddress ? { macAddress: macAddress.toUpperCase() } : {}),
-      plan, status: 'expired'
-    });
+    if (await Customer.exists({ phone })) {
+      return res.json({ code: 'ACCOUNT_EXISTS', message: 'Existing account found.' });
+    }
+    await Customer.create({ name: name.trim(), phone, plan, status: 'expired' });
     return res.status(201).json({ message: 'Account created. Continue to M-Pesa to activate your plan.' });
   } catch (error) {
     if (error.code === 11000) {
-      const phoneExists = await Customer.exists({ phone: req.body.phone });
-      if (phoneExists) return res.json({ code: 'ACCOUNT_EXISTS', message: 'Existing account found.' });
-      return res.status(409).json({ code: 'DEVICE_EXISTS', error: 'This device is already linked to another account. Contact support.' });
+      const field = Object.keys(error.keyPattern || {})[0] || 'unknown';
+      if (field === 'phone') return res.json({ code: 'ACCOUNT_EXISTS', message: 'Existing account found.' });
+      // Anything else is a database setup problem, not the customer's fault.
+      console.error('Registration blocked by a database index:', { index: field, keyValue: error.keyValue });
+      return res.status(500).json({ error: 'We could not create your account right now. Please contact support.' });
     }
     next(error);
   }
@@ -44,14 +46,18 @@ router.post('/register', async (req, res, next) => {
 
 router.post('/customers', adminAuth, async (req, res, next) => {
   try {
-    const { name, phone, macAddress, plan, status = 'expired', expiresAt = null } = req.body;
-    if (typeof name !== 'string' || !name.trim() || !PHONE_PATTERN.test(phone || '') ||
-        !MAC_PATTERN.test(macAddress || '') || !['weekly', 'monthly'].includes(plan) ||
+    const { name, phone, plan, status = 'expired', expiresAt = null } = req.body;
+    const macAddress = req.body.macAddress ? normalizeMac(req.body.macAddress) : undefined;
+    if (typeof name !== 'string' || !name.trim() || typeof phone !== 'string' || !PHONE_PATTERN.test(phone) ||
+        (req.body.macAddress && !macAddress) || !['weekly', 'monthly'].includes(plan) ||
         !['active', 'expired', 'suspended'].includes(status) ||
         (expiresAt !== null && !Number.isFinite(Date.parse(expiresAt)))) {
-      return res.status(400).json({ error: 'Valid name, phone, MAC address, plan, status, and optional expiry date are required.' });
+      return res.status(400).json({ error: 'Valid name, phone, plan and status are required; MAC address and expiry date are optional.' });
     }
-    const customer = await Customer.create({ name, phone, macAddress, plan, status, expiresAt });
+    const customer = await Customer.create({
+      name: name.trim(), phone, plan, status, expiresAt, ...(macAddress ? { macAddress } : {})
+    });
+    await trySyncCustomerAccess(customer.toObject());
     return res.status(201).json(customer);
   } catch (error) {
     if (error.code === 11000) return res.status(409).json({ error: 'A customer with this phone or MAC address already exists.' });
@@ -71,21 +77,27 @@ router.get('/customers/:id', adminAuth, async (req, res, next) => {
 router.patch('/customers/:id/suspend', adminAuth, async (req, res, next) => {
   try {
     if (!mongoose.isValidObjectId(req.params.id)) return res.status(400).json({ error: 'Invalid customer ID.' });
-    const customer = await Customer.findByIdAndUpdate(req.params.id, { $set: { status: 'suspended' } }, { new: true, runValidators: true });
+    const customer = await Customer.findByIdAndUpdate(req.params.id,
+      { $set: { status: 'suspended', networkState: 'pending' } }, { new: true, runValidators: true }).lean();
     if (!customer) return res.status(404).json({ error: 'Customer not found.' });
-    await network.deactivate(customer);
-    res.json(customer);
+    // Cut off on the router now; if the router is down, the scheduler retries.
+    await trySyncCustomerAccess(customer);
+    res.json(await Customer.findById(customer._id).lean());
   } catch (error) { next(error); }
 });
 
 router.get('/dashboard', adminAuth, async (req, res, next) => {
   try {
-    const [total, grouped] = await Promise.all([
+    const [total, grouped, outOfSync] = await Promise.all([
       Customer.countDocuments(),
-      Customer.aggregate([{ $group: { _id: '$status', count: { $sum: 1 } } }])
+      Customer.aggregate([{ $group: { _id: '$status', count: { $sum: 1 } } }]),
+      Customer.countDocuments({ networkState: 'pending' })
     ]);
     const counts = Object.fromEntries(grouped.map(({ _id, count }) => [_id, count]));
-    res.json({ total, active: counts.active || 0, expired: counts.expired || 0, suspended: counts.suspended || 0 });
+    res.json({
+      total, active: counts.active || 0, expired: counts.expired || 0, suspended: counts.suspended || 0,
+      routerPending: outOfSync
+    });
   } catch (error) { next(error); }
 });
 

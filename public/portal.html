@@ -2,377 +2,436 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#0f766e">
-  <meta name="description" content="Renew your PigAbiz Internet plan with M-Pesa.">
-  <title>PigAbiz Internet | Renew your plan</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="BingwaConnect: affordable data, minutes and SMS deals, plus home WiFi. Pay with M-Pesa.">
+  <title>BingwaConnect | Data deals and home WiFi</title>
+  <link rel="preload" as="image" href="/img/family-900.jpg" imagesrcset="/img/family-900.jpg 900w, /img/family-1600.jpg 1290w" imagesizes="100vw">
+  <!-- Everything here is served by this server: customers see this page before the hotspot lets them online. -->
   <style>
     :root {
-      color-scheme: light;
-      --brand: #0f766e;
-      --brand-strong: #115e59;
-      --brand-soft: #e8f5f3;
-      --accent: #f59e0b;
-      --accent-ink: #27200f;
-      --page: #f7faf9;
-      --surface: #fff;
-      --surface-soft: #f0f6f5;
-      --text: #172b2a;
-      --muted: #526663;
-      --line: #d8e4e1;
-      --success: #16794b;
-      --success-soft: #e8f6ee;
-      --danger: #b42318;
-      --danger-soft: #fff0ee;
-      --shadow: 0 20px 60px rgb(19 54 49 / 10%);
-      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-synthesis: none;
-      text-rendering: optimizeLegibility;
+      --bg: #000;
+      --surface: #0b0b0c;
+      --surface-2: #141416;
+      --text: #ffffff;
+      --text-2: #b4b4b8;
+      --text-3: #7c7c82;
+      --line: rgb(255 255 255 / 14%);
+      --line-strong: rgb(255 255 255 / 32%);
+      --danger: #ff6b5e;
+      --radius: 6px;
+      /* 8px spacing scale */
+      --s1: 8px; --s2: 16px; --s3: 24px; --s4: 32px; --s5: 48px; --s6: 64px; --s7: 96px; --s8: 144px;
+      --gutter: clamp(20px, 5vw, 64px);
+      font-family: "Helvetica Neue", Helvetica, Arial, ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color-scheme: dark;
     }
-
     *, *::before, *::after { box-sizing: border-box; }
-    html { scroll-behavior: smooth; }
-    body { margin: 0; min-width: 320px; background: var(--page); color: var(--text); line-height: 1.6; }
-    body, button, input { font-family: inherit; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body { margin: 0; min-width: 320px; background: var(--bg); color: var(--text); font-size: 16px; line-height: 1.6; -webkit-font-smoothing: antialiased; }
+    ::selection { background: #fff; color: #000; }
     a { color: inherit; }
-    button, input { font: inherit; }
-    button { color: inherit; }
-    img, svg { display: block; }
+    img { display: block; max-width: 100%; }
+    svg { display: block; }
+    button, input { font: inherit; color: inherit; }
     [hidden] { display: none !important; }
-    .wrap { width: min(1120px, 100% - 36px); margin-inline: auto; }
-    .section { padding-block: 72px; }
-    .section-head { max-width: 620px; margin: 0 auto 32px; text-align: center; }
-    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--brand); font-size: .76rem; font-weight: 800; letter-spacing: .12em; text-transform: uppercase; }
-    .eyebrow::before { width: 7px; height: 7px; border-radius: 50%; background: currentColor; content: ""; }
-    h1, h2, h3, p { margin-top: 0; }
-    h1, h2, h3 { line-height: 1.12; letter-spacing: -.04em; }
-    h1 { margin-bottom: 16px; font-size: clamp(2.7rem, 11vw, 4.7rem); font-weight: 800; }
-    h2 { margin-bottom: 12px; font-size: clamp(1.8rem, 6vw, 2.55rem); font-weight: 800; }
-    h3 { margin-bottom: 8px; font-size: 1.1rem; }
-    .section-head p, .muted { color: var(--muted); }
-    .section-head p { margin-bottom: 0; font-size: 1rem; }
+    h1, h2, h3, p { margin: 0; }
+    h1, h2, h3 { font-weight: 500; letter-spacing: -.02em; line-height: 1.08; }
+    :focus-visible { outline: 2px solid #fff; outline-offset: 3px; }
 
-    .btn { display: inline-flex; min-height: 48px; align-items: center; justify-content: center; gap: 10px; padding: 0 19px; border: 1px solid transparent; border-radius: 12px; font-size: .95rem; font-weight: 750; text-align: center; text-decoration: none; cursor: pointer; transition: transform .18s ease, background-color .18s ease, box-shadow .18s ease; }
-    .btn:hover { transform: translateY(-2px); }
-    .btn:active { transform: translateY(0); }
-    .btn:focus-visible, a:focus-visible, summary:focus-visible, input:focus-visible { outline: 3px solid color-mix(in srgb, var(--brand) 45%, transparent); outline-offset: 3px; }
-    .btn-cta { background: var(--accent); color: var(--accent-ink); box-shadow: 0 8px 20px rgb(245 158 11 / 22%); }
-    .btn-cta:hover { background: #e38c00; }
-    .btn-brand { background: var(--brand); color: #fff; }
-    .btn-brand:hover { background: var(--brand-strong); }
-    .btn-quiet { border-color: var(--line); background: var(--surface); color: var(--text); }
-    .btn-quiet:hover { background: var(--surface-soft); }
-    .btn[disabled] { cursor: wait; opacity: .72; transform: none; }
+    .container { width: 100%; max-width: 1240px; margin-inline: auto; padding-inline: var(--gutter); }
+    .eyebrow { display: block; margin-bottom: var(--s2); color: var(--text-2); font-size: .75rem; font-weight: 500; letter-spacing: .22em; text-transform: uppercase; }
 
-    .site-header { position: absolute; z-index: 3; inset: 0 0 auto; color: white; }
-    .nav { display: flex; min-height: 74px; align-items: center; justify-content: space-between; gap: 16px; }
-    .wordmark { display: inline-flex; align-items: center; gap: 10px; color: inherit; font-size: 1.04rem; font-weight: 800; letter-spacing: -.045em; text-decoration: none; }
-    .brand-mark { display: grid; width: 38px; height: 38px; place-items: center; border: 1px solid rgb(255 255 255 / 27%); border-radius: 12px; background: rgb(255 255 255 / 12%); }
-    .nav-links { display: none; align-items: center; gap: 26px; }
-    .nav-links a { color: rgb(255 255 255 / 88%); font-size: .9rem; font-weight: 650; text-decoration: none; }
+    /* Buttons: one primary per view, everything else outlined */
+    .btn { display: inline-flex; min-height: 48px; white-space: nowrap; align-items: center; justify-content: center; gap: var(--s1); padding: 0 var(--s4); border: 1.5px solid var(--text); border-radius: var(--radius); background: transparent; font-size: .8rem; font-weight: 600; letter-spacing: .14em; text-decoration: none; text-transform: uppercase; cursor: pointer; transition: background-color .25s ease, color .25s ease, border-color .25s ease; }
+    .btn:hover { background: #fff; color: #000; }
+    .btn-solid { background: #fff; color: #000; }
+    .btn-solid:hover { background: transparent; color: #fff; }
+    .btn-quiet { border-color: var(--line-strong); }
+    .btn[disabled] { cursor: wait; opacity: .55; }
+    .link { display: inline-flex; align-items: center; gap: 10px; font-size: .8rem; font-weight: 600; letter-spacing: .14em; text-decoration: none; text-transform: uppercase; }
+    .link span { transition: transform .25s ease; }
+    .link:hover span { transform: translateX(4px); }
+
+    /* Header */
+    .header { position: fixed; z-index: 20; inset: 0 0 auto; background: linear-gradient(to bottom, rgb(0 0 0 / 55%), transparent); transition: background-color .3s ease, backdrop-filter .3s ease; }
+    .header.scrolled { background: rgb(0 0 0 / 72%); backdrop-filter: saturate(140%) blur(14px); }
+    .nav { display: flex; height: 72px; align-items: center; justify-content: space-between; gap: var(--s3); }
+    .wordmark { display: inline-flex; align-items: center; gap: 12px; font-size: .95rem; font-weight: 700; letter-spacing: .32em; text-decoration: none; text-transform: uppercase; }
+    .nav-links { display: none; gap: var(--s4); }
+    .nav-links a { color: var(--text-2); font-size: .78rem; font-weight: 500; letter-spacing: .14em; text-decoration: none; text-transform: uppercase; transition: color .2s; }
     .nav-links a:hover { color: #fff; }
-    .nav-contact { color: rgb(255 255 255 / 92%); font-size: .78rem; font-weight: 700; text-decoration: none; }
+    .nav .btn { min-height: 40px; padding: 0 var(--s3); font-size: .72rem; }
 
-    .hero { position: relative; overflow: hidden; padding: 116px 0 60px; background: radial-gradient(650px 420px at 90% 8%, rgb(45 212 191 / 24%), transparent 70%), linear-gradient(135deg, #0b3d39, #0f766e 75%, #168b80); color: white; }
-    .hero::after { position: absolute; right: -180px; bottom: -360px; width: 540px; height: 540px; border: 1px solid rgb(255 255 255 / 12%); border-radius: 50%; box-shadow: 0 0 0 55px rgb(255 255 255 / 4%), 0 0 0 110px rgb(255 255 255 / 3%); content: ""; pointer-events: none; }
-    .hero-layout { position: relative; z-index: 1; display: grid; align-items: center; gap: 34px; }
-    .hero-copy { max-width: 650px; animation: rise-in .55s ease both; }
-    .hero .eyebrow { color: #c3f0e9; }
-    .hero h1 { max-width: 11ch; margin-top: 17px; }
-    .hero-lead { max-width: 56ch; margin-bottom: 25px; color: #e0f2ef; font-size: 1.03rem; line-height: 1.75; }
-    .hero-actions { display: flex; flex-wrap: wrap; gap: 11px; }
-    .hero .btn-quiet { border-color: rgb(255 255 255 / 42%); background: transparent; color: #fff; }
-    .hero .btn-quiet:hover { background: rgb(255 255 255 / 10%); }
-    .hero-art { width: min(100%, 440px); justify-self: center; filter: drop-shadow(0 22px 40px rgb(0 0 0 / 17%)); animation: rise-in .65s .08s ease both; }
-    .hero-note { display: flex; align-items: center; gap: 10px; margin-top: 27px; color: #d1e9e5; font-size: .82rem; }
-    .hero-note svg { flex: 0 0 auto; }
+    /* Full-bleed photo sections */
+    .scene { position: relative; display: flex; min-height: 100svh; overflow: hidden; isolation: isolate; }
+    .scene > img { position: absolute; z-index: -2; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+    .scene::after { position: absolute; z-index: -1; inset: 0; content: ""; }
+    .scene .container { display: flex; flex-direction: column; }
 
-    .plans-section { padding-top: 66px; }
-    .plan-grid { display: grid; max-width: 850px; gap: 18px; margin-inline: auto; }
-    .plan { position: relative; display: flex; min-width: 0; flex-direction: column; padding: 25px 23px 23px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); box-shadow: 0 10px 30px rgb(24 55 51 / 4%); }
-    .plan h3 { margin-bottom: 7px; font-size: 1.12rem; }
-    .plan-duration { margin-bottom: 16px; color: var(--muted); font-size: .88rem; }
-    .plan-price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 7px; margin: 0 0 13px; color: var(--text); }
-    .plan-price strong { font-size: clamp(2.65rem, 13vw, 3.45rem); font-weight: 800; letter-spacing: -.075em; line-height: 1; }
-    .plan-price span { color: var(--muted); font-size: .9rem; font-weight: 600; }
-    .plan-list { display: grid; gap: 10px; margin: 7px 0 22px; padding: 0; list-style: none; color: var(--muted); font-size: .9rem; }
-    .plan-list li { display: flex; align-items: flex-start; gap: 9px; }
-    .plan-list svg { flex: 0 0 auto; margin-top: 4px; color: var(--brand); }
+    .hero { display: block; min-height: 0; }
+    .hero > img { position: relative; z-index: -2; height: 58svh; min-height: 340px; object-position: 70% 35%; }
+    .hero::after { bottom: auto; height: max(58svh, 340px); background: linear-gradient(to bottom, rgb(0 0 0 / 55%), transparent 22%, transparent 55%, #000 100%); }
+    .hero .container { margin-top: -56px; padding-bottom: var(--s6); }
+    .hero h1 { max-width: 12ch; margin-bottom: var(--s3); font-size: clamp(2.6rem, 10vw, 5rem); }
+    .hero-sub { max-width: 40ch; margin-bottom: var(--s2); color: var(--text-2); font-size: clamp(1rem, 2.6vw, 1.15rem); }
+    .hero-price { margin-bottom: var(--s4); font-size: .95rem; }
+    .hero-price strong { font-size: 1.15rem; font-weight: 600; }
+    .actions { display: flex; flex-wrap: wrap; gap: 12px; }
+    .actions .btn { flex: 1 1 0; padding: 0 var(--s2); }
+
+    .facts { display: grid; grid-template-columns: repeat(2, 1fr); gap: var(--s3) var(--s2); margin-top: var(--s6); padding-top: var(--s4); border-top: 1px solid var(--line); }
+    .fact { display: flex; gap: 12px; align-items: flex-start; }
+    .fact svg { flex: 0 0 auto; margin-top: 2px; color: #fff; }
+    .fact b { display: block; font-size: .88rem; font-weight: 600; }
+    .fact span { color: var(--text-3); font-size: .8rem; line-height: 1.45; }
+
+    /* Plans */
+    .section { padding-block: var(--s7); }
+    .head { max-width: 640px; margin-bottom: var(--s6); }
+    .head.center { margin-inline: auto; text-align: center; }
+    .head h2 { margin-bottom: var(--s2); font-size: clamp(2rem, 6vw, 3.25rem); }
+    .head p { color: var(--text-2); font-size: 1.05rem; }
+    .plans-grid { display: grid; gap: var(--s3); max-width: 920px; margin-inline: auto; }
+    .plan { display: flex; flex-direction: column; padding: var(--s5) var(--s4) var(--s4); border: 1px solid var(--line); border-radius: 10px; background: var(--surface); transition: border-color .3s ease; }
+    .plan:hover { border-color: var(--line-strong); }
+    .plan.featured { border-color: #fff; }
+    .plan-top { display: flex; align-items: center; justify-content: space-between; gap: var(--s2); margin-bottom: var(--s4); }
+    .plan h3 { font-size: 1.5rem; }
+    .tag { padding: 5px 10px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--text-2); font-size: .66rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+    .plan.featured .tag { border-color: #fff; background: #fff; color: #000; }
+    .price { display: flex; align-items: baseline; gap: 6px; }
+    .price strong { font-size: clamp(2.8rem, 9vw, 3.5rem); font-weight: 500; letter-spacing: -.04em; line-height: 1; }
+    .price span { color: var(--text-2); font-size: 1rem; }
+    .price-note { margin: var(--s1) 0 var(--s4); color: var(--text-3); font-size: .86rem; }
+    .list { display: grid; gap: 14px; margin: 0 0 var(--s5); padding: var(--s4) 0 0; border-top: 1px solid var(--line); list-style: none; color: var(--text-2); font-size: .94rem; }
+    .list li { display: flex; gap: 12px; }
+    .list svg { flex: 0 0 auto; margin-top: 4px; color: #fff; }
     .plan .btn { width: 100%; margin-top: auto; }
-    .plan-monthly { border: 2px solid var(--accent); box-shadow: 0 18px 42px rgb(28 67 60 / 10%); }
-    .best-value { position: absolute; top: 16px; right: 16px; padding: 6px 10px; border-radius: 999px; background: var(--accent); color: var(--accent-ink); font-size: .69rem; font-weight: 850; letter-spacing: .06em; text-transform: uppercase; }
-    .saving { margin: -2px 0 15px; color: var(--brand-strong); font-size: .82rem; font-weight: 750; }
+    .fine { margin-top: var(--s4); color: var(--text-3); font-size: .82rem; text-align: center; }
 
-    .steps-section { border-block: 1px solid var(--line); background: var(--surface); }
-    .steps-grid { display: grid; gap: 14px; }
-    .step-card { display: grid; grid-template-columns: 46px 1fr; align-items: start; gap: 14px; padding: 18px; border: 1px solid var(--line); border-radius: 16px; background: var(--page); }
-    .step-icon { display: grid; width: 46px; height: 46px; place-items: center; border-radius: 14px; background: var(--brand-soft); color: var(--brand); }
-    .step-number { margin: 0 0 4px; color: var(--brand); font-size: .7rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-    .step-card h3 { margin: 0 0 5px; font-size: 1rem; }
-    .step-card p { margin: 0; color: var(--muted); font-size: .86rem; }
+    /* Runner scene */
+    .speed > img { object-position: 78% center; }
+    .speed::after { background: linear-gradient(to top, rgb(0 0 0 / 90%) 10%, rgb(0 0 0 / 20%) 55%, rgb(0 0 0 / 40%)); }
+    .speed .container { justify-content: flex-end; padding-block: var(--s7) var(--s6); }
+    .speed h2, .together h2 { max-width: 14ch; margin-bottom: var(--s3); font-size: clamp(2.2rem, 7vw, 4rem); }
+    .speed p, .together p { max-width: 42ch; margin-bottom: var(--s4); color: var(--text-2); font-size: 1.05rem; }
 
-    .support-card { display: grid; gap: 22px; padding: 24px; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: var(--shadow); }
-    .support-card h2 { margin-bottom: 9px; font-size: clamp(1.65rem, 6vw, 2.15rem); }
-    .support-card p { max-width: 54ch; margin-bottom: 0; color: var(--muted); }
-    .support-actions { display: grid; gap: 10px; }
-    .contact-label { margin-bottom: 5px; color: var(--muted); font-size: .73rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
-    .support-number { display: inline-block; margin-bottom: 11px; color: var(--brand-strong); font-size: 1rem; font-weight: 750; text-decoration: none; }
+    /* Steps */
+    .steps { display: grid; gap: var(--s5); }
+    .step { padding-top: var(--s3); border-top: 1px solid var(--line-strong); }
+    .step-n { display: block; margin-bottom: var(--s3); color: var(--text-3); font-size: .78rem; font-weight: 600; letter-spacing: .2em; }
+    .step h3 { margin-bottom: 10px; font-size: 1.3rem; }
+    .step p { color: var(--text-2); font-size: .96rem; }
 
-    .faq-list { display: grid; gap: 10px; max-width: 800px; margin-inline: auto; }
-    .faq-item { overflow: clip; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
-    .faq-item summary { position: relative; padding: 17px 48px 17px 18px; font-size: .94rem; font-weight: 750; cursor: pointer; list-style: none; }
-    .faq-item summary::-webkit-details-marker { display: none; }
-    .faq-item summary::after { position: absolute; top: 50%; right: 18px; color: var(--brand); font-size: 1.25rem; content: "+"; transform: translateY(-50%); }
-    .faq-item[open] summary::after { content: "−"; }
-    .faq-answer { padding: 0 18px 17px; color: var(--muted); font-size: .88rem; }
-    .faq-answer p { margin: 0; }
+    /* Group scene */
+    /* Mobile: text on black, photo underneath fading up into it */
+    .together { flex-direction: column-reverse; min-height: 0; }
+    .together > img { position: relative; height: 56svh; min-height: 320px; object-position: 50% center; }
+    .together::after { top: auto; height: max(56svh, 320px); background: linear-gradient(to bottom, #000 0%, transparent 30%, transparent 80%, #000 100%); }
+    .together .container { align-items: center; padding-top: var(--s7); padding-bottom: var(--s3); text-align: center; }
+    .together h2, .together p { margin-inline: auto; }
 
-    .site-footer { padding-block: 28px; background: #0b3d39; color: #e4f3f1; }
-    .footer-layout { display: flex; flex-direction: column; gap: 17px; }
-    .footer-brand { display: inline-flex; align-items: center; gap: 9px; font-weight: 800; letter-spacing: -.04em; }
-    .footer-meta { display: flex; flex-direction: column; gap: 4px; color: #c5deda; font-size: .79rem; }
-    .footer-meta a { color: inherit; text-decoration: none; }
-    .copyright { color: #c5deda; font-size: .76rem; }
+    /* Help */
+    .help { display: grid; gap: var(--s6); }
+    .help h2 { margin-bottom: var(--s2); font-size: clamp(2rem, 6vw, 3rem); }
+    .help-intro { margin-bottom: var(--s4); color: var(--text-2); }
+    .contact { display: grid; gap: 12px; }
+    .contact a.phone { font-size: 1.35rem; font-weight: 500; text-decoration: none; }
+    .contact .btn { justify-self: start; }
+    .faq { border-top: 1px solid var(--line); }
+    .faq details { border-bottom: 1px solid var(--line); }
+    .faq summary { position: relative; padding: var(--s3) var(--s5) var(--s3) 0; font-size: 1.02rem; font-weight: 500; cursor: pointer; list-style: none; }
+    .faq summary::-webkit-details-marker { display: none; }
+    .faq summary::before, .faq summary::after { position: absolute; top: 50%; right: 4px; width: 14px; height: 1.5px; background: #fff; content: ""; transition: transform .25s ease; }
+    .faq summary::after { transform: rotate(90deg); }
+    .faq details[open] summary::after { transform: rotate(0); }
+    .faq details p { padding: 0 var(--s5) var(--s3) 0; color: var(--text-2); font-size: .95rem; }
 
-    dialog { width: min(480px, calc(100vw - 30px)); max-height: min(88vh, 760px); padding: 0; overflow: auto; border: 1px solid var(--line); border-radius: 22px; background: var(--surface); color: var(--text); box-shadow: 0 30px 100px rgb(0 0 0 / 28%); }
-    dialog::backdrop { background: rgb(4 26 24 / 60%); backdrop-filter: blur(4px); }
-    .modal { padding: 25px; }
-    .modal-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: 16px; }
-    .modal h2 { margin-bottom: 5px; font-size: 1.42rem; }
-    .modal-sub { margin: 0 0 17px; color: var(--muted); font-size: .86rem; }
-    .close-modal { display: grid; width: 44px; height: 44px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--muted); cursor: pointer; }
-    .summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 19px; padding: 13px 14px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface-soft); font-size: .88rem; font-weight: 750; }
-    .summary span:last-child { color: var(--brand-strong); }
-    .modal label { display: block; margin-bottom: 7px; font-size: .83rem; font-weight: 750; }
-    .modal input { width: 100%; min-height: 52px; padding: 0 14px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); font-size: 1rem; }
-    .modal input::placeholder { color: var(--muted); opacity: 1; }
-    .hint { margin: 7px 0 15px; color: var(--muted); font-size: .76rem; }
-    .text-toggle { min-height: 44px; padding: 7px 0; border: 0; background: transparent; color: var(--brand-strong); font-size: .79rem; font-weight: 650; text-align: left; text-decoration: underline; cursor: pointer; }
-    .error { min-height: 1.25em; margin: 0 0 10px; color: var(--danger); font-size: .83rem; }
-    .modal-actions { display: flex; gap: 10px; }
-    .modal-actions .btn { flex: 1; }
-    .state { padding: 13px 1px 2px; text-align: center; }
-    .state h2 { margin: 14px 0 7px; }
-    .state > p { margin: 0 0 19px; color: var(--muted); font-size: .9rem; }
-    .state-mark { display: grid; width: 62px; height: 62px; place-items: center; margin: 0 auto; border-radius: 50%; background: var(--brand-soft); color: var(--brand); }
-    .state-mark.success { background: var(--success-soft); color: var(--success); }
-    .state-mark.fail { background: var(--danger-soft); color: var(--danger); }
-    .spinner { width: 25px; height: 25px; border: 3px solid color-mix(in srgb, var(--brand) 24%, transparent); border-top-color: var(--brand); border-radius: 50%; animation: spin .8s linear infinite; }
-    .progress-list { display: grid; gap: 9px; margin: 22px 0; text-align: left; }
-    .progress-step { display: flex; align-items: center; gap: 11px; padding: 11px 12px; border: 1px solid var(--line); border-radius: 12px; color: var(--muted); font-size: .84rem; font-weight: 700; }
-    .progress-step.current { border-color: color-mix(in srgb, var(--brand) 42%, var(--line)); background: var(--brand-soft); color: var(--brand-strong); }
-    .progress-dot { display: grid; width: 25px; height: 25px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: var(--surface-soft); color: var(--muted); font-size: .7rem; }
-    .progress-step.current .progress-dot { background: var(--brand); color: white; }
+    /* Footer */
+    .footer { padding-block: var(--s6) var(--s5); border-top: 1px solid var(--line); color: var(--text-3); font-size: .82rem; }
+    .footer-row { display: flex; flex-direction: column; gap: var(--s3); }
+    .footer-links { display: flex; flex-wrap: wrap; gap: var(--s2) var(--s4); }
+    .footer a { text-decoration: none; letter-spacing: .1em; text-transform: uppercase; font-size: .72rem; }
+    .footer a:hover { color: #fff; }
+
+    /* Payment dialog */
+    dialog { width: min(460px, calc(100vw - 32px)); max-height: min(90vh, 780px); padding: 0; overflow: auto; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); color: var(--text); box-shadow: 0 40px 120px rgb(0 0 0 / 70%); }
+    dialog::backdrop { background: rgb(0 0 0 / 72%); backdrop-filter: blur(6px); }
+    .modal { padding: var(--s4); }
+    .modal-heading { display: flex; align-items: flex-start; justify-content: space-between; gap: var(--s2); margin-bottom: var(--s3); }
+    .modal h2 { margin-bottom: 6px; font-size: 1.5rem; }
+    .modal-sub { color: var(--text-2); font-size: .9rem; }
+    .close-modal { display: grid; width: 40px; height: 40px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line); border-radius: 50%; background: transparent; color: var(--text-2); cursor: pointer; transition: border-color .2s, color .2s; }
+    .close-modal:hover { border-color: #fff; color: #fff; }
+    .summary { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: var(--s4); padding: var(--s2) 0; border-block: 1px solid var(--line); font-size: .9rem; }
+    .summary span:first-child { color: var(--text-2); }
+    .summary span:last-child { font-size: 1.05rem; font-weight: 600; }
+    .modal label { display: block; margin-bottom: var(--s1); color: var(--text-2); font-size: .72rem; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; }
+    .modal input { width: 100%; min-height: 52px; padding: 0 var(--s2); border: 1px solid var(--line-strong); border-radius: var(--radius); background: var(--bg); font-size: 1.05rem; transition: border-color .2s; }
+    .modal input:focus { border-color: #fff; outline: none; }
+    .modal input::placeholder { color: var(--text-3); }
+    .hint { margin: 10px 0 var(--s3); color: var(--text-3); font-size: .8rem; }
+    .text-toggle { min-height: 44px; padding: 0; border: 0; background: transparent; color: #fff; font-size: .86rem; text-decoration: underline; text-underline-offset: 4px; cursor: pointer; }
+    .error { min-height: 1.4em; margin: 6px 0 var(--s2); color: var(--danger); font-size: .88rem; }
+    .modal-actions { display: flex; gap: 12px; }
+    .modal-actions .btn { flex: 0 0 auto; min-width: 0; padding: 0 var(--s3); letter-spacing: .1em; }
+    .modal-actions .btn:last-child { flex: 1 1 auto; white-space: normal; line-height: 1.25; text-align: center; }
+    .state { padding-top: var(--s2); text-align: center; }
+    .state h2 { margin: var(--s3) 0 10px; }
+    .state > p { margin-bottom: var(--s4); color: var(--text-2); font-size: .95rem; }
+    .state-mark { display: grid; width: 64px; height: 64px; place-items: center; margin: 0 auto; border: 1px solid var(--line-strong); border-radius: 50%; }
+    .state-mark.success { border-color: #fff; background: #fff; color: #000; }
+    .state-mark.fail { border-color: var(--danger); color: var(--danger); }
+    .spinner { width: 26px; height: 26px; border: 2px solid var(--line-strong); border-top-color: #fff; border-radius: 50%; animation: spin .9s linear infinite; }
+    .progress-list { display: grid; gap: 0; margin: var(--s4) 0 0; text-align: left; border-top: 1px solid var(--line); }
+    .progress-step { display: flex; align-items: center; gap: 14px; padding: var(--s2) 0; border-bottom: 1px solid var(--line); color: var(--text-3); font-size: .9rem; }
+    .progress-step.current { color: #fff; }
+    .progress-dot { display: grid; width: 26px; height: 26px; flex: 0 0 auto; place-items: center; border: 1px solid var(--line-strong); border-radius: 50%; font-size: .72rem; }
+    .progress-step.current .progress-dot { border-color: #fff; background: #fff; color: #000; }
     .state .btn { width: 100%; }
 
-    @keyframes spin { to { transform: rotate(360deg); } }
-    @keyframes rise-in { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-    @media (min-width: 700px) {
-      .wrap { width: min(1120px, 100% - 56px); }
-      .nav { min-height: 84px; }
+    /* Bundles */
+    .tabs { display: flex; gap: 4px; width: fit-content; margin: 0 auto var(--s5); padding: 4px; border: 1px solid var(--line); border-radius: 999px; }
+    .tab { min-height: 40px; padding: 0 var(--s3); border: 0; border-radius: 999px; background: transparent; color: var(--text-2); font-size: .76rem; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; cursor: pointer; transition: background-color .2s, color .2s; }
+    .tab[aria-selected="true"] { background: #fff; color: #000; }
+    .filters { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; margin: calc(var(--s3) * -1) 0 var(--s4); }
+    .filter { min-height: 34px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--text-2); font-size: .8rem; cursor: pointer; }
+    .filter[aria-pressed="true"] { border-color: #fff; color: #fff; }
+    .bundle-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 230px), 1fr)); gap: 12px; }
+    .bundle { display: flex; flex-direction: column; gap: 4px; min-height: 168px; padding: var(--s3); border: 1px solid var(--line); border-radius: 10px; background: var(--surface); color: inherit; text-align: left; cursor: pointer; transition: border-color .2s ease, transform .2s ease; }
+    .bundle:hover { border-color: #fff; transform: translateY(-2px); }
+    .bundle-size { font-size: 1.5rem; font-weight: 500; letter-spacing: -.02em; line-height: 1.15; }
+    .bundle-valid { color: var(--text-2); font-size: .88rem; }
+    .bundle-foot { display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; margin-top: auto; padding-top: var(--s2); }
+    .bundle-price { font-size: 1.2rem; font-weight: 600; white-space: nowrap; }
+    .bundle-tag { padding: 3px 8px; border: 1px solid var(--line-strong); border-radius: 999px; color: var(--text-3); font-size: .62rem; font-weight: 600; letter-spacing: .1em; text-transform: uppercase; white-space: nowrap; }
+    .till-card { display: grid; gap: var(--s4); margin-top: var(--s5); padding: var(--s4); border: 1px solid var(--line-strong); border-radius: 10px; }
+    .till-number { font-size: 1rem; color: var(--text-2); }
+    .till-number strong { display: block; margin-top: 4px; color: #fff; font-size: clamp(2.4rem, 9vw, 3.2rem); font-weight: 500; letter-spacing: .02em; line-height: 1; }
+    .till-name { margin-top: var(--s1); color: var(--text-3); font-size: .85rem; letter-spacing: .08em; text-transform: uppercase; }
+    .till-steps, .pay-steps { display: grid; gap: 12px; margin: 0; padding-left: 1.3em; color: var(--text-2); font-size: .93rem; }
+    .till-steps b, .pay-steps b { color: #fff; font-weight: 600; }
+    .pay-box { margin-bottom: var(--s3); border-block: 1px solid var(--line); }
+    .pay-row { display: grid; grid-template-columns: 1fr auto auto; align-items: center; gap: 12px; padding: 14px 0; }
+    .pay-row + .pay-row { border-top: 1px solid var(--line); }
+    .pay-row span { color: var(--text-2); font-size: .85rem; }
+    .pay-row strong { font-size: 1.3rem; font-weight: 600; }
+    .copy { min-height: 34px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: transparent; font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
+    .copy:hover { border-color: #fff; }
+    .pay-note { margin: var(--s3) 0; padding: 12px 14px; border-left: 2px solid #fff; background: var(--surface-2); color: var(--text-2); font-size: .85rem; }
+    @media (min-width: 720px) { .till-card { grid-template-columns: 1fr 1.3fr; align-items: center; padding: var(--s5); } }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+    @keyframes fade-up { from { opacity: 0; transform: translateY(18px); } to { opacity: 1; transform: none; } }
+    .hero .container > * { animation: fade-up .8s ease both; }
+    .hero .container > :nth-child(2) { animation-delay: .08s; }
+    .hero .container > :nth-child(3) { animation-delay: .16s; }
+    .hero .container > :nth-child(4) { animation-delay: .24s; }
+    .hero .container > :nth-child(5) { animation-delay: .32s; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s ease; }
+    .reveal.in { opacity: 1; transform: none; }
+
+    @media (min-width: 720px) {
+      .facts { grid-template-columns: repeat(4, 1fr); gap: var(--s4); }
+      .plans-grid { grid-template-columns: 1fr 1fr; }
+      .steps { grid-template-columns: repeat(3, 1fr); gap: var(--s4); }
+      .actions .btn { flex: 0 0 auto; }
+    }
+    @media (min-width: 960px) {
       .nav-links { display: flex; }
-      .nav-contact { font-size: .86rem; }
-      .hero { padding: 146px 0 82px; }
-      .hero-layout { grid-template-columns: minmax(0, 1.08fr) minmax(330px, .92fr); gap: 44px; }
-      .hero-art { justify-self: end; }
-      .hero-lead { font-size: 1.08rem; }
-      .section { padding-block: 88px; }
-      .plans-section { padding-top: 78px; }
-      .plan-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 22px; }
-      .plan { padding: 28px; }
-      .plan-monthly { transform: scale(1.025); }
-      .steps-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
-      .step-card { grid-template-columns: 1fr; padding: 21px; }
-      .support-card { grid-template-columns: 1fr auto; align-items: center; gap: 40px; padding: 36px; }
-      .support-actions { min-width: 230px; }
-      .footer-layout { flex-direction: row; align-items: center; justify-content: space-between; }
+      .section { padding-block: var(--s8); }
+      .hero { display: flex; min-height: 100svh; }
+      .hero > img { position: absolute; height: 100%; min-height: 0; object-position: center; }
+      .speed > img { object-position: center; }
+      .hero::after { bottom: 0; height: auto; background: linear-gradient(90deg, rgb(0 0 0 / 85%) 0%, rgb(0 0 0 / 45%) 38%, rgb(0 0 0 / 0%) 62%), linear-gradient(to top, rgb(0 0 0 / 92%) 0%, rgb(0 0 0 / 60%) 16%, transparent 40%); }
+      .hero .container { justify-content: flex-end; margin-top: 0; padding-top: 140px; padding-bottom: var(--s5); }
+      .actions .btn { padding: 0 var(--s4); }
+      .facts { margin-top: var(--s7); }
+      .speed::after { background: linear-gradient(90deg, rgb(0 0 0 / 85%) 0%, rgb(0 0 0 / 35%) 40%, transparent 65%); }
+      .speed .container { justify-content: center; }
+      .help { grid-template-columns: 5fr 7fr; gap: var(--s7); }
+      .together { flex-direction: row; min-height: 90svh; }
+      .together > img { position: absolute; height: 100%; min-height: 0; object-position: center 45%; }
+      .together::after { top: 0; height: auto; background: linear-gradient(to bottom, rgb(0 0 0 / 94%) 0%, rgb(0 0 0 / 70%) 26%, transparent 50%), linear-gradient(to top, #000, transparent 16%); }
+      .together .container { justify-content: flex-start; padding-top: var(--s6); }
+      .together h2 { max-width: none; }
+      .footer-row { flex-direction: row; align-items: center; justify-content: space-between; }
     }
-    @media (max-width: 699px) {
-      .section { padding-block: 58px; }
-      .plans-section { padding-top: 56px; }
-      .hero-art { max-width: 320px; margin-top: 5px; }
-      .plan { padding: 24px 20px 20px; }
-      dialog { width: 100%; max-width: none; max-height: min(92dvh, 760px); margin: auto 0 0; border-right: 0; border-bottom: 0; border-left: 0; border-radius: 22px 22px 0 0; }
-      .modal { padding: 22px 20px max(22px, env(safe-area-inset-bottom)); }
-    }
-    @media (prefers-color-scheme: dark) {
-      :root {
-        color-scheme: dark;
-        --brand: #2dd4bf;
-        --brand-strong: #5eead4;
-        --brand-soft: #123d3a;
-        --accent: #f59e0b;
-        --accent-ink: #211a0d;
-        --page: #0d1716;
-        --surface: #142220;
-        --surface-soft: #1b2d2a;
-        --text: #e7f0ee;
-        --muted: #b1c3bf;
-        --line: #2c403c;
-        --success: #55d18c;
-        --success-soft: #173a2a;
-        --danger: #ff8a80;
-        --danger-soft: #3b211f;
-        --shadow: 0 20px 60px rgb(0 0 0 / 24%);
-      }
-      .hero { background: radial-gradient(650px 420px at 90% 8%, rgb(45 212 191 / 18%), transparent 70%), linear-gradient(135deg, #092a27, #0b514b 75%, #0f6960); }
-      .hero .eyebrow { color: #b7f3ea; }
-      .plan-monthly { border-color: var(--accent); }
-      .site-footer { background: #071f1d; }
-      .saving { color: var(--brand-strong); }
+    @media (max-width: 719px) {
+      dialog { width: 100%; max-width: none; max-height: min(94dvh, 800px); margin: auto 0 0; border-width: 1px 0 0; border-radius: 16px 16px 0 0; }
+      .modal { padding: var(--s3) 20px max(var(--s3), env(safe-area-inset-bottom)); }
     }
     @media (prefers-reduced-motion: reduce) {
-      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+      *, *::before, *::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+      .reveal { opacity: 1; transform: none; }
     }
   </style>
 </head>
 <body>
-  <header class="site-header">
-    <nav class="wrap nav" aria-label="Main navigation">
-      <a class="wordmark" href="#top" aria-label="PigAbiz Internet home">
-        <span class="brand-mark" aria-hidden="true">
-          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 9.5a12 12 0 0 1 17 0M6.8 12.8a7.3 7.3 0 0 1 10.4 0M10.1 16.1a2.7 2.7 0 0 1 3.8 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="19.2" r="1.2" fill="currentColor"/></svg>
-        </span>
-        PigAbiz Internet
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <symbol id="i-check" viewBox="0 0 20 20"><path d="m4 10.5 3.8 3.8L16 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></symbol>
+  </svg>
+
+  <header class="header" id="header">
+    <nav class="container nav" aria-label="Main navigation">
+      <a class="wordmark" href="#top" aria-label="BingwaConnect home">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M2.5 9a13.5 13.5 0 0 1 19 0M6 12.5a8.5 8.5 0 0 1 12 0M9.5 16a3.5 3.5 0 0 1 5 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="19.5" r="1.4" fill="currentColor"/></svg>
+        Bingwa<span style="font-weight:400">Connect</span>
       </a>
-      <div class="nav-links"><a href="#plans">Plans</a><a href="#how">How it works</a><a href="#faq">FAQ</a><a href="#support">Support</a></div>
-      <a class="nav-contact" href="#support">Talk to support</a>
+      <div class="nav-links"><a href="#bundles">Bundles</a><a href="#plans">Home WiFi</a><a href="#how">How it works</a><a href="#help">Support</a></div>
+      <a class="btn" href="#bundles">Buy bundles</a>
     </nav>
   </header>
 
   <main id="top">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="wrap hero-layout">
-        <div class="hero-copy">
-          <span class="eyebrow">PigAbiz Internet</span>
-          <h1 id="hero-title">Your connection, renewed in a few taps.</h1>
-          <p class="hero-lead">Choose a plan and approve the M-Pesa prompt sent to your account phone.</p>
-          <div class="hero-actions">
-            <a class="btn btn-cta" href="#plans">Renew now <span aria-hidden="true">→</span></a>
-            <a class="btn btn-quiet" href="#plans">View plans</a>
+    <section class="scene hero" aria-labelledby="hero-title">
+      <img src="/img/family-900.jpg" srcset="/img/family-900.jpg 900w, /img/family-1600.jpg 1290w" sizes="100vw" alt="A family on their balcony at sunset, watching something together on a phone" fetchpriority="high">
+      <div class="container">
+        <span class="eyebrow">Data · Minutes · SMS · Home WiFi</span>
+        <h1 id="hero-title">Stay connected. Pay less.</h1>
+        <p class="hero-sub">Affordable data, minutes and SMS deals for your Safaricom line, and home WiFi for the whole family. All paid with M-Pesa.</p>
+        <p class="hero-price">Bundles from <strong>KES 5</strong></p>
+        <div class="actions">
+          <a class="btn btn-solid" href="#bundles">Buy bundles</a>
+          <a class="btn btn-quiet" href="#plans">Home WiFi</a>
+        </div>
+        <div class="facts">
+          <div class="fact"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="6.5" y="3" width="11" height="18" rx="2.5" stroke="currentColor" stroke-width="1.5"/><path d="M10.5 17.5h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div><b>Pay with M-Pesa</b><span>Straight from your phone</span></div></div>
+          <div class="fact"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.5"/><path d="M12 7.5V12l3 2" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div><b>Fast delivery</b><span>Bundles arrive by SMS</span></div></div>
+          <div class="fact"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M7 4h7l4 4v12H7z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="m4 20 16-16" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg><div><b>Buy what you need</b><span>From KES 5, no contract</span></div></div>
+          <div class="fact"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11.7a8 8 0 0 1-11.8 7L4 20l1.3-4A8 8 0 1 1 20 11.7Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg><div><b>Local support</b><span>Call or WhatsApp us</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="bundles" aria-labelledby="bundles-title">
+      <div class="container">
+        <div class="head center reveal">
+          <span class="eyebrow">Bundles</span>
+          <h2 id="bundles-title">Data, minutes &amp; SMS deals</h2>
+          <p>For your Safaricom line. Pick a deal and pay the exact amount to our till. The bundle arrives by SMS from Safaricom.</p>
+        </div>
+        <div class="tabs reveal" role="tablist" aria-label="Bundle type">
+          <button class="tab" role="tab" type="button" data-tab="data" aria-selected="true">Data</button>
+          <button class="tab" role="tab" type="button" data-tab="minutes" aria-selected="false">Minutes</button>
+          <button class="tab" role="tab" type="button" data-tab="sms" aria-selected="false">SMS</button>
+        </div>
+        <div class="bundle-grid" id="bundle-grid" role="tabpanel" aria-live="polite"></div>
+        <div class="till-card reveal">
+          <div>
+            <span class="eyebrow">Lipa na M-Pesa · Buy Goods</span>
+            <p class="till-number">Till <strong>{{TILL_NUMBER}}</strong></p>
+            <p class="till-name">{{TILL_NAME}}</p>
           </div>
-          <p class="hero-note">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 19 6v5.5c0 4.1-2.8 7.3-7 9-4.2-1.7-7-4.9-7-9V6l7-2.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Payment confirmation updates your PigAbiz account.
-          </p>
+          <ol class="till-steps">
+            <li>M-Pesa → Lipa na M-Pesa → Buy Goods and Services</li>
+            <li>Till number <b>{{TILL_NUMBER}}</b></li>
+            <li>Enter the <b>exact</b> price of your deal</li>
+            <li>Enter your PIN and send</li>
+          </ol>
         </div>
-        <svg class="hero-art" viewBox="0 0 440 330" role="img" aria-labelledby="signal-title signal-desc">
-          <title id="signal-title">Home with a Wi-Fi signal</title>
-          <desc id="signal-desc">A simple illustration of a connected home.</desc>
-          <defs><linearGradient id="art-card" x1="36" y1="26" x2="401" y2="309" gradientUnits="userSpaceOnUse"><stop stop-color="#f7fffd"/><stop offset="1" stop-color="#cdeee8"/></linearGradient><linearGradient id="art-house" x1="116" y1="123" x2="296" y2="283" gradientUnits="userSpaceOnUse"><stop stop-color="#fff"/><stop offset="1" stop-color="#d7eeea"/></linearGradient></defs>
-          <rect x="12" y="12" width="416" height="306" rx="30" fill="url(#art-card)"/>
-          <circle cx="356" cy="77" r="31" fill="#0f766e" opacity=".12"/><circle cx="356" cy="77" r="16" fill="#0f766e"/>
-          <path d="m95 170 125-94 125 94v109a12 12 0 0 1-12 12H107a12 12 0 0 1-12-12V170Z" fill="url(#art-house)" stroke="#0f766e" stroke-width="5" stroke-linejoin="round"/>
-          <path d="M178 291v-83a42 42 0 0 1 84 0v83M143 184h26m103 0h26" stroke="#0f766e" stroke-width="5" stroke-linecap="round"/>
-          <path d="M170 95a71 71 0 0 1 100 0m-82 18a46 46 0 0 1 64 0m-45 18a20 20 0 0 1 27 0" fill="none" stroke="#0f766e" stroke-width="8" stroke-linecap="round"/>
-          <circle cx="220" cy="145" r="5" fill="#0f766e"/>
-          <rect x="287" y="218" width="80" height="63" rx="14" fill="#fff" stroke="#c6ddd9" stroke-width="2"/>
-          <path d="M303 239h48m-48 15h36" stroke="#0f766e" stroke-width="5" stroke-linecap="round" opacity=".7"/>
-          <circle cx="349" cy="267" r="5" fill="#0f766e"/>
-        </svg>
+        <p class="fine">Pay from the line that should get the bundle. Deals marked “1 per day” can be bought once a day per line. BingwaConnect is an independent agent; prices may change.</p>
       </div>
     </section>
 
-    <section class="section plans-section" id="plans" aria-labelledby="plans-title">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="eyebrow">Choose your plan</span>
-          <h2 id="plans-title">Straightforward plans. Easy renewal.</h2>
-          <p>Select a plan, enter the phone number on your account, then approve the M-Pesa prompt.</p>
+    <section class="section" id="plans" aria-labelledby="plans-title">
+      <div class="container">
+        <div class="head center reveal">
+          <span class="eyebrow">Home WiFi</span>
+          <h2 id="plans-title">WiFi for the whole home</h2>
+          <p>Approve the M-Pesa prompt and your device comes online by itself. Renew early and the new days are added to the time you have left.</p>
         </div>
-        <div class="plan-grid">
-          <article class="plan">
-            <h3>Weekly</h3>
-            <p class="plan-duration">A simple 7-day renewal</p>
-            <p class="plan-price"><strong>KES 300</strong><span>/ 7 days</span></p>
-            <ul class="plan-list">
-              <li><svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Pay with an M-Pesa prompt</li>
-              <li><svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Your account updates after confirmation</li>
+        <div class="plans-grid">
+          <article class="plan reveal">
+            <div class="plan-top"><h3>Weekly</h3><span class="tag">Flexible</span></div>
+            <p class="price"><strong>KES 300</strong><span>/ 7 days</span></p>
+            <p class="price-note">About KES 43 a day</p>
+            <ul class="list">
+              <li><svg width="16" height="16"><use href="#i-check"/></svg>Pay with an M-Pesa prompt</li>
+              <li><svg width="16" height="16"><use href="#i-check"/></svg>Reminder a day before it ends</li>
+              <li><svg width="16" height="16"><use href="#i-check"/></svg>No contract</li>
             </ul>
-            <button class="btn btn-brand" type="button" data-plan="weekly">Choose weekly</button>
+            <button class="btn" type="button" data-plan="weekly">Choose weekly</button>
           </article>
-          <article class="plan plan-monthly">
-            <span class="best-value">Best value</span>
-            <h3>Monthly</h3>
-            <p class="plan-duration">A full 30-day renewal</p>
-            <p class="plan-price"><strong>KES 999</strong><span>/ 30 days</span></p>
-            <p class="saving">About KES 291 less than 4.3 weekly renewals.</p>
-            <ul class="plan-list">
-              <li><svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Pay with an M-Pesa prompt</li>
-              <li><svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m4 10 4 4 8-8" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>Your account updates after confirmation</li>
+          <article class="plan featured reveal">
+            <div class="plan-top"><h3>Monthly</h3><span class="tag">Best value</span></div>
+            <p class="price"><strong>KES 999</strong><span>/ 30 days</span></p>
+            <p class="price-note">About KES 33 a day</p>
+            <ul class="list">
+              <li><svg width="16" height="16"><use href="#i-check"/></svg>Everything in Weekly</li>
+              <li><svg width="16" height="16"><use href="#i-check"/></svg>One payment for the month</li>
+              <li><svg width="16" height="16"><use href="#i-check"/></svg>Lowest price per day</li>
             </ul>
-            <button class="btn btn-brand" type="button" data-plan="monthly">Choose monthly</button>
+            <button class="btn btn-solid" type="button" data-plan="monthly">Choose monthly</button>
           </article>
         </div>
+        <p class="fine">Prices in Kenyan shillings, paid through M-Pesa.</p>
       </div>
     </section>
 
-    <section class="section steps-section" id="how" aria-labelledby="how-title">
-      <div class="wrap">
-        <div class="section-head">
+    <section class="scene speed" aria-labelledby="speed-title">
+      <img src="/img/runner-900.jpg" srcset="/img/runner-900.jpg 900w, /img/runner-1600.jpg 1286w" sizes="100vw" alt="" loading="lazy">
+      <div class="container reveal">
+        <span class="eyebrow">Every day</span>
+        <h2 id="speed-title">Keeps up with your day.</h2>
+        <p>School, work, streaming and calls home. One connection for everyone in the house, and you stay in control of what you pay.</p>
+        <div><a class="link" href="#how">How it works <span aria-hidden="true">→</span></a></div>
+      </div>
+    </section>
+
+    <section class="section" id="how" aria-labelledby="how-title">
+      <div class="container">
+        <div class="head reveal">
           <span class="eyebrow">How it works</span>
-          <h2 id="how-title">Renew in three clear steps.</h2>
-          <p>Keep the phone linked to your account nearby for the M-Pesa prompt.</p>
+          <h2 id="how-title">Home WiFi in three steps</h2>
+          <p>Keep the phone with your M-Pesa line nearby.</p>
         </div>
-        <div class="steps-grid">
-          <article class="step-card">
-            <span class="step-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-11A2.5 2.5 0 0 1 4 17.5v-11Z" stroke="currentColor" stroke-width="1.7"/><path d="M8 9h8m-8 3h8m-8 3h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
-            <div><p class="step-number">Step 01</p><h3>Choose a plan</h3><p>Pick a weekly or monthly renewal for your account.</p></div>
-          </article>
-          <article class="step-card">
-            <span class="step-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><rect x="6" y="3.5" width="12" height="17" rx="2.5" stroke="currentColor" stroke-width="1.7"/><path d="M9 7h6m-6 3h6m-6 3h3m-1 4h2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
-            <div><p class="step-number">Step 02</p><h3>Approve M-Pesa</h3><p>Enter your account phone number and approve the prompt with your PIN.</p></div>
-          </article>
-          <article class="step-card">
-            <span class="step-icon" aria-hidden="true"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 3.5 19 6v5.5c0 4.1-2.8 7.3-7 9-4.2-1.7-7-4.9-7-9V6l7-2.5Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m9 12 2 2 4-4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
-            <div><p class="step-number">Step 03</p><h3>Wait for confirmation</h3><p>The portal checks for payment confirmation and updates your account.</p></div>
-          </article>
+        <div class="steps">
+          <article class="step reveal"><span class="step-n">01</span><h3>Choose a plan</h3><p>Weekly or monthly. Tap the one that suits you.</p></article>
+          <article class="step reveal"><span class="step-n">02</span><h3>Approve on M-Pesa</h3><p>Enter your number, then your PIN when the prompt appears.</p></article>
+          <article class="step reveal"><span class="step-n">03</span><h3>You’re connected</h3><p>Your device comes online by itself once the payment is confirmed.</p></article>
         </div>
       </div>
     </section>
 
-    <section class="section" id="support" aria-labelledby="support-title">
-      <div class="wrap support-card">
-        <div>
-          <span class="eyebrow">Here to help</span>
-          <h2 id="support-title">Need help with your renewal?</h2>
-          <p>If payment is confirmed but your connection is still offline, contact PigAbiz support and share your M-Pesa confirmation message.</p>
-        </div>
-        <div class="support-actions">
-          <p class="contact-label">Call PigAbiz support</p>
-          <a class="support-number" href="tel:{{SUPPORT_PHONE}}">{{SUPPORT_PHONE}}</a>
-          <a class="btn btn-brand" href="https://wa.me/{{WHATSAPP_NUMBER}}" target="_blank" rel="noopener noreferrer">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M20 11.7a8 8 0 0 1-11.8 7L4 20l1.3-4A8 8 0 1 1 20 11.7Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 9c.5 2 2 3.5 4 4l1-1 2 1c-.5 1.5-1.5 2-3 1.5-2.5-.8-4.8-3.1-5.5-5.5C7 7.5 7.5 6.5 9 6l1 2-1 1Z" fill="currentColor"/></svg>
-            Chat on WhatsApp
-          </a>
-        </div>
+    <section class="scene together" aria-labelledby="together-title">
+      <img src="/img/group-900.jpg" srcset="/img/group-900.jpg 900w, /img/group-1600.jpg 1408w" sizes="100vw" alt="" loading="lazy">
+      <div class="container reveal">
+        <span class="eyebrow">Get started</span>
+        <h2 id="together-title">Everyone online. Together.</h2>
+        <p>It takes about a minute. All you need is your phone.</p>
+        <div><a class="btn btn-solid" href="#plans">Choose a plan</a></div>
       </div>
     </section>
 
-    <section class="section" id="faq" aria-labelledby="faq-title">
-      <div class="wrap">
-        <div class="section-head">
-          <span class="eyebrow">Quick answers</span>
-          <h2 id="faq-title">Frequently asked questions</h2>
+    <section class="section" id="help" aria-labelledby="help-title">
+      <div class="container help">
+        <div class="reveal">
+          <span class="eyebrow">Support</span>
+          <h2 id="help-title">We’re here to help</h2>
+          <p class="help-intro">Paid but still offline? Share your M-Pesa confirmation message and we’ll sort it out.</p>
+          <div class="contact">
+            <a class="phone" href="tel:{{SUPPORT_PHONE}}">{{SUPPORT_PHONE}}</a>
+            <a class="btn btn-quiet" href="https://wa.me/{{WHATSAPP_NUMBER}}" target="_blank" rel="noopener noreferrer">WhatsApp us</a>
+          </div>
         </div>
-        <div class="faq-list">
-          <details class="faq-item"><summary>How long until I’m reconnected?</summary><div class="faq-answer"><p>The portal updates your account when it receives payment confirmation. Keep this page open while it checks. If no confirmation appears within two minutes, check your M-Pesa message and contact support.</p></div></details>
-          <details class="faq-item"><summary>What if I paid but I’m still offline?</summary><div class="faq-answer"><p>Keep your M-Pesa confirmation message and contact PigAbiz support using the number or WhatsApp link above. The portal records your account status; network equipment may still need attention.</p></div></details>
-          <details class="faq-item"><summary>Can I pay for someone else?</summary><div class="faq-answer"><p>Choose the plan for the account and enter the phone number linked to that account. The M-Pesa prompt is sent to the number you enter, so the person with that phone must approve it.</p></div></details>
+        <div class="faq reveal">
+          <details><summary>How fast am I reconnected?</summary><p>Usually within a minute of approving the M-Pesa prompt. If Safaricom is slow to confirm, it can take a few minutes. Keep this page open and it will tell you when you’re active.</p></details>
+          <details><summary>I paid but I’m still offline</summary><p>Wait a few minutes, then turn your WiFi off and on. If you’re still offline, contact us with your M-Pesa confirmation message.</p></details>
+          <details><summary>What if I renew before my plan ends?</summary><p>Nothing is wasted. The new days are added on top of the time you already have.</p></details>
+          <details><summary>Can I pay for someone else?</summary><p>Yes. Enter the phone number on their account. The M-Pesa prompt goes to that phone, so its owner approves it.</p></details>
+          <details><summary>I have a new phone. What do I do?</summary><p>Connect the new phone to the WiFi and pay from the page that opens. It is linked automatically and the old phone is disconnected.</p></details>
         </div>
       </div>
     </section>
   </main>
 
-  <footer class="site-footer">
-    <div class="wrap footer-layout">
-      <span class="footer-brand"><svg width="21" height="21" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3.5 9.5a12 12 0 0 1 17 0M6.8 12.8a7.3 7.3 0 0 1 10.4 0m-7.1 3.3a2.7 2.7 0 0 1 3.8 0" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><circle cx="12" cy="19.2" r="1.2" fill="currentColor"/></svg>PigAbiz Internet</span>
-      <span class="footer-meta"><a href="tel:{{SUPPORT_PHONE}}">Support: {{SUPPORT_PHONE}}</a><span>Internet plan renewals with M-Pesa</span></span>
-      <span class="copyright">© <span id="year"></span> PigAbiz Internet</span>
+  <footer class="footer">
+    <div class="container footer-row">
+      <span>© <span id="year"></span> BingwaConnect</span>
+      <div class="footer-links"><a href="#bundles">Bundles</a><a href="#plans">Home WiFi</a><a href="#how">How it works</a><a href="#help">Support</a><a href="tel:{{SUPPORT_PHONE}}">Call us</a></div>
     </div>
   </footer>
 
@@ -380,46 +439,90 @@
     <div class="modal">
       <div id="form-view">
         <div class="modal-heading">
-          <div><h2 id="dialog-title">Create your account</h2><p class="modal-sub">Choose your plan, then approve the M-Pesa prompt.</p></div>
-          <button class="close-modal" id="cancel" type="button" aria-label="Close payment dialog"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
+          <div><h2 id="dialog-title">Create your account</h2><p class="modal-sub">Then approve the M-Pesa prompt on your phone.</p></div>
+          <button class="close-modal" id="cancel" type="button" aria-label="Close payment dialog"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
         </div>
         <div class="summary"><span id="summary-plan"></span><span id="summary-price"></span></div>
         <form id="payment-form">
-          <div id="signup-fields"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" maxlength="120" required><p class="hint">We’ll link your device after signup.</p></div>
+          <div id="signup-fields"><label for="name">Full name</label><input id="name" name="name" autocomplete="name" maxlength="120" required><p class="hint">Your device is linked automatically when you pay.</p></div>
           <label for="phone">M-Pesa phone number</label>
-          <input id="phone" name="phone" type="tel" inputmode="numeric" autocomplete="tel" placeholder="254712345678" pattern="2547[0-9]{8}" maxlength="12" aria-describedby="phone-hint" required>
-          <p class="hint" id="phone-hint">Format: 07XX XXX XXX. Enter as 2547XXXXXXXX, without spaces.</p>
+          <input id="phone" name="phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0712 345 678" maxlength="16" aria-describedby="phone-hint" required>
+          <p class="hint" id="phone-hint">The Safaricom number that will get the M-Pesa prompt.</p>
           <button class="text-toggle" id="mode-toggle" type="button">Already have an account? Renew instead</button>
           <p class="error" id="error" role="alert"></p>
-          <div class="modal-actions"><button class="btn btn-quiet" id="cancel-secondary" type="button">Back</button><button class="btn btn-brand" id="pay-button" type="submit">Create account &amp; continue</button></div>
+          <div class="modal-actions"><button class="btn btn-quiet" id="cancel-secondary" type="button">Back</button><button class="btn btn-solid" id="pay-button" type="submit">Create account &amp; continue</button></div>
         </form>
       </div>
       <div id="wait-view" class="state" hidden aria-live="polite">
         <div class="state-mark" aria-hidden="true"><span class="spinner"></span></div>
-        <h2>Check your phone for the M-Pesa prompt</h2>
-        <p>Approve the prompt with your M-Pesa PIN. Keep this page open while we wait for confirmation.</p>
+        <h2>Check your phone</h2>
+        <p>Enter your M-Pesa PIN on the prompt. Keep this page open while we confirm your payment.</p>
         <div class="progress-list" aria-label="Payment progress">
-          <div class="progress-step current"><span class="progress-dot"><span class="spinner" style="width:13px;height:13px;border-width:2px;border-color:rgb(255 255 255 / 45%);border-top-color:#fff"></span></span><span>Check your phone for the prompt</span></div>
-          <div class="progress-step"><span class="progress-dot">2</span><span>Confirming payment...</span></div>
+          <div class="progress-step current"><span class="progress-dot">1</span><span>Approve the M-Pesa prompt</span></div>
+          <div class="progress-step"><span class="progress-dot">2</span><span>We confirm and connect you</span></div>
         </div>
       </div>
       <div id="success-view" class="state" hidden aria-live="polite">
-        <div class="state-mark success" aria-hidden="true"><svg width="30" height="30" viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h2>Payment received</h2><p id="success-message" role="status"></p><button class="btn btn-brand" type="button" data-close>Done</button>
+        <div class="state-mark success" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2>You’re online</h2><p id="success-message" role="status"></p><button class="btn btn-solid" type="button" data-close>Done</button>
       </div>
       <div id="failure-view" class="state" hidden aria-live="polite">
-        <div class="state-mark fail" aria-hidden="true"><span style="font-size:1.6rem;font-weight:800">!</span></div>
+        <div class="state-mark fail" aria-hidden="true"><span style="font-size:1.5rem;font-weight:600">!</span></div>
         <h2>Payment not confirmed</h2><p id="failure-message" role="status"></p>
-        <div class="modal-actions"><button class="btn btn-quiet" type="button" data-close>Close</button><button class="btn btn-brand" id="retry" type="button">Try again</button></div>
+        <div class="modal-actions"><button class="btn btn-quiet" type="button" data-close>Close</button><button class="btn btn-solid" id="retry" type="button">Try again</button></div>
       </div>
     </div>
   </dialog>
 
+  <dialog id="bundle-dialog" aria-labelledby="bundle-title">
+    <div class="modal">
+      <div class="modal-heading">
+        <div><h2 id="bundle-title"></h2><p class="modal-sub" id="bundle-sub"></p></div>
+        <button class="close-modal" type="button" data-close-bundle aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      </div>
+      <div class="pay-box">
+        <div class="pay-row"><span>Till number</span><strong>{{TILL_NUMBER}}</strong><button class="copy" type="button" data-copy="{{TILL_NUMBER}}">Copy</button></div>
+        <div class="pay-row"><span>Exact amount</span><strong id="bundle-amount"></strong><button class="copy" type="button" id="copy-amount">Copy</button></div>
+      </div>
+      <ol class="pay-steps">
+        <li>Open <b>M-Pesa</b> → <b>Lipa na M-Pesa</b></li>
+        <li>Choose <b>Buy Goods and Services</b></li>
+        <li>Enter till <b>{{TILL_NUMBER}}</b> and the exact amount above</li>
+        <li>Enter your PIN. Your bundle arrives by SMS from Safaricom.</li>
+      </ol>
+      <p class="pay-note" id="bundle-note"></p>
+      <button class="btn btn-solid" type="button" data-close-bundle style="width:100%">Done</button>
+    </div>
+  </dialog>
+
+  <script>
+    // Header turns solid after scrolling; sections fade in once as they enter the screen.
+    (() => {
+      const header = document.getElementById('header');
+      const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 24);
+      onScroll(); window.addEventListener('scroll', onScroll, { passive: true });
+      const items = document.querySelectorAll('.reveal');
+      if (!('IntersectionObserver' in window)) { items.forEach((el) => el.classList.add('in')); return; }
+      const io = new IntersectionObserver((entries) => entries.forEach((e) => {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      }), { rootMargin: '0px 0px -8% 0px' });
+      items.forEach((el) => io.observe(el));
+    })();
+  </script>
   <script>
     const $ = (selector) => document.querySelector(selector);
     const prices = { weekly: 300, monthly: 999 };
     const labels = { weekly: 'Weekly · 7 days', monthly: 'Monthly · 30 days' };
     const dialog = $('#payment-dialog');
+    // The MikroTik hotspot sends customers here as /?mac=AA:BB:..; that links the device on payment.
+    const deviceMac = new URLSearchParams(location.search).get('mac') || undefined;
+    // Accept 0712345678, 712345678, +254712345678, 254712345678 (and 01XX numbers); return 2547XXXXXXXX or null.
+    function normalizePhone(value) {
+      let digits = value.replace(/[\s\-()]/g, '').replace(/^\+/, '');
+      if (/^0[71]\d{8}$/.test(digits)) digits = '254' + digits.slice(1);
+      else if (/^[71]\d{8}$/.test(digits)) digits = '254' + digits;
+      return /^254[71]\d{8}$/.test(digits) ? digits : null;
+    }
     const views = ['form-view', 'wait-view', 'success-view', 'failure-view'];
     let selectedPlan = 'weekly';
     let renewalMode = false;
@@ -454,7 +557,7 @@
         const result = await response.json();
         if (result.status === 'paid') {
           stopPolling();
-          $('#success-message').textContent = 'Your payment is confirmed and your PigAbiz account is marked active.';
+          $('#success-message').textContent = 'Payment confirmed. Your device will be online within a minute.';
           showView('success-view');
         } else if (result.status === 'failed') {
           stopPolling();
@@ -467,8 +570,12 @@
     $('#payment-form').addEventListener('submit', async (event) => {
       event.preventDefault();
       stopPolling();
-      const phone = $('#phone').value.trim();
       $('#error').textContent = '';
+      const phone = normalizePhone($('#phone').value);
+      if (!phone) {
+        $('#error').textContent = 'Enter a valid Safaricom number, e.g. 0712 345 678.';
+        return;
+      }
       $('#pay-button').disabled = true;
       $('#pay-button').textContent = 'Sending request…';
       try {
@@ -484,13 +591,13 @@
             $('#name').required = false;
             $('#dialog-title').textContent = 'Pay with M-Pesa';
             $('#pay-button').textContent = 'Continue to M-Pesa';
-            $('#mode-toggle').textContent = 'New to PigAbiz? Create an account';
+            $('#mode-toggle').textContent = 'New here? Create an account';
           } else if (!registration.ok) {
             throw new Error(registrationResult.error || 'Could not create your account.');
           }
           registrationComplete = true;
         }
-        const response = await fetch('/api/pay', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, plan: selectedPlan }) });
+        const response = await fetch('/api/pay', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ phone, plan: selectedPlan, mac: deviceMac }) });
         const result = await response.json();
         if (!response.ok) throw new Error(registrationComplete && !renewalMode
           ? `Your account is created, but payment could not start: ${result.error || 'Please try again.'} You can retry.`
@@ -502,9 +609,11 @@
           stopPolling();
           $('#failure-message').textContent = 'We have not received confirmation yet. If money was deducted, contact support with your M-Pesa message.';
           showView('failure-view');
-        }, 120000);
+        }, 240000);
       } catch (error) {
-        $('#error').textContent = error.message || 'Network problem. Check your connection and try again.';
+        $('#error').textContent = error instanceof TypeError
+          ? 'Could not reach BingwaConnect. Check your connection and try again.'
+          : (error.message || 'Something went wrong. Please try again.');
         $('#pay-button').disabled = false;
       } finally {
         $('#pay-button').textContent = 'Continue to M-Pesa';
@@ -521,7 +630,7 @@
       $('#name').required = !renewalMode;
       $('#dialog-title').textContent = renewalMode ? 'Pay with M-Pesa' : 'Create your account';
       $('#pay-button').textContent = renewalMode ? 'Continue to M-Pesa' : 'Create account & continue';
-      $('#mode-toggle').textContent = renewalMode ? 'New to PigAbiz? Create an account' : 'Already have an account? Renew instead';
+      $('#mode-toggle').textContent = renewalMode ? 'New here? Create an account' : 'Already have an account? Renew instead';
       $('#error').textContent = '';
     });
     $('#retry').addEventListener('click', () => { showView('form-view'); $('#error').textContent = ''; $('#pay-button').disabled = false; $('#phone').focus(); });
@@ -529,6 +638,108 @@
     dialog.addEventListener('close', stopPolling);
     document.addEventListener('keydown', (event) => { if (event.key === 'Escape' && dialog.open) stopPolling(); });
     $('#year').textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+    // TBD: bundles are paid manually to the till for now. Move this list to the database
+    // (admin-editable) and add STK push / auto-delivery once discussed with the client.
+    // limit: 'daily' = one Bingwa offer per line per day; 'multi' = can be bought many times.
+    const BUNDLES = {
+      data: [
+        { size: '1GB', valid: '1 hour', price: 19, limit: 'daily', group: 'Hourly' },
+        { size: '250MB', valid: '24 hours', price: 20, limit: 'daily', group: '24 hours' },
+        { size: '1GB', valid: '1 hour', price: 23, limit: 'multi', group: 'Hourly' },
+        { size: '1GB', valid: '1 hour', price: 25, limit: 'multi', group: 'Hourly' },
+        { size: '250MB', valid: 'Buy many times', price: 26, limit: 'multi', group: '24 hours' },
+        { size: '400MB', valid: '7 days', price: 49, limit: 'daily', group: '7 days' },
+        { size: '1.5GB', valid: '3 hours', price: 50, limit: 'daily', group: 'Hourly' },
+        { size: '750MB', valid: '24 hours', price: 52, limit: 'daily', group: '24 hours' },
+        { size: '750MB', valid: '24 hours', price: 53, limit: 'multi', group: '24 hours' },
+        { size: '750MB + 50 SMS', valid: '24 hours', price: 54, limit: 'daily', group: '24 hours' },
+        { size: '1GB', valid: 'Till midnight', price: 55, limit: 'daily', group: 'Till midnight' },
+        { size: '1.5GB', valid: '24 hours', price: 99, limit: 'daily', group: '24 hours' },
+        { size: '1GB', valid: '24 hours', price: 100, limit: 'daily', group: '24 hours' },
+        { size: '2GB', valid: '24 hours', price: 105, limit: 'multi', group: '24 hours' },
+        { size: '1.5GB', valid: '24 hours', price: 106, limit: 'multi', group: '24 hours' },
+        { size: '2GB', valid: '24 hours', price: 110, limit: 'multi', group: '24 hours' }
+      ],
+      minutes: [
+        { size: '45 minutes', valid: '3 hours', price: 21, limit: 'multi' },
+        { size: '45 minutes', valid: '3 hours', price: 22, limit: 'multi' },
+        { size: '60 minutes', valid: 'Till midnight', price: 51, limit: 'multi' },
+        { size: '50 minutes', valid: 'Till midnight', price: 56, limit: 'multi' },
+        { size: '100 minutes', valid: 'Till midnight', price: 101, limit: 'multi' },
+        { size: '250 minutes', valid: '7 days', price: 199, limit: 'multi' },
+        { size: '313 minutes', valid: '7 days', price: 220, limit: 'multi' }
+      ],
+      sms: [
+        { size: '20 SMS', valid: '1 day', price: 5, limit: 'multi' },
+        { size: '200 SMS', valid: '1 day', price: 10, limit: 'multi' },
+        { size: '1,000 SMS', valid: '7 days', price: 30, limit: 'multi' },
+        { size: '1,500 SMS', valid: '30 days', price: 103, limit: 'multi' }
+      ]
+    };
+    (() => {
+      const grid = document.getElementById('bundle-grid');
+      const dialog = document.getElementById('bundle-dialog');
+      const tabs = document.querySelectorAll('.tab');
+      const groups = ['All', 'Hourly', 'Till midnight', '24 hours', '7 days'];
+      let tab = 'data', group = 'All', current = null;
+      const esc = (t) => String(t).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+
+      function render() {
+        let filters = document.querySelector('.filters');
+        if (tab === 'data') {
+          if (!filters) {
+            filters = document.createElement('div'); filters.className = 'filters';
+            filters.innerHTML = groups.map((g) => `<button class="filter" type="button" data-group="${g}">${g}</button>`).join('');
+            grid.before(filters);
+            filters.addEventListener('click', (e) => { const b = e.target.closest('[data-group]'); if (b) { group = b.dataset.group; render(); } });
+          }
+          filters.querySelectorAll('.filter').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.group === group)));
+        } else if (filters) { filters.remove(); }
+
+        const list = BUNDLES[tab].filter((b) => tab !== 'data' || group === 'All' || b.group === group);
+        grid.innerHTML = list.map((b) => `
+          <button class="bundle" type="button" data-price="${b.price}">
+            <span class="bundle-size">${esc(b.size)}</span>
+            <span class="bundle-valid">${esc(b.valid)}</span>
+            <span class="bundle-foot"><span class="bundle-price">KSh ${b.price}</span>
+              <span class="bundle-tag">${b.limit === 'daily' ? '1 per day' : 'Buy many'}</span></span>
+          </button>`).join('');
+      }
+
+      tabs.forEach((t) => t.addEventListener('click', () => {
+        tab = t.dataset.tab; group = 'All';
+        tabs.forEach((x) => x.setAttribute('aria-selected', String(x === t)));
+        render();
+      }));
+
+      grid.addEventListener('click', (e) => {
+        const card = e.target.closest('.bundle'); if (!card) return;
+        current = BUNDLES[tab].find((b) => String(b.price) === card.dataset.price);
+        document.getElementById('bundle-title').textContent = current.size;
+        document.getElementById('bundle-sub').textContent = current.valid;
+        document.getElementById('bundle-amount').textContent = `KSh ${current.price}`;
+        document.getElementById('bundle-note').textContent = current.limit === 'daily'
+          ? 'Pay from the line that should get the bundle. This deal can be bought once a day per line; a second purchase on the same day may not go through.'
+          : 'Pay from the line that should get the bundle. You can buy this deal as many times as you like.';
+        dialog.showModal();
+      });
+
+      async function copy(text, button) {
+        try { await navigator.clipboard.writeText(text); } catch (_) {
+          const t = document.createElement('textarea'); t.value = text; document.body.append(t); t.select();
+          try { document.execCommand('copy'); } catch (__) {} t.remove();
+        }
+        const old = button.textContent; button.textContent = 'Copied'; setTimeout(() => { button.textContent = old; }, 1400);
+      }
+      dialog.querySelectorAll('[data-copy]').forEach((b) => b.addEventListener('click', () => copy(b.dataset.copy, b)));
+      document.getElementById('copy-amount').addEventListener('click', (e) => current && copy(String(current.price), e.currentTarget));
+      dialog.querySelectorAll('[data-close-bundle]').forEach((b) => b.addEventListener('click', () => dialog.close()));
+      dialog.addEventListener('click', (e) => { if (e.target === dialog) dialog.close(); });
+      render();
+    })();
   </script>
 </body>
 </html>

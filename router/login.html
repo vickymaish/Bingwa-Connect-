@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Connecting…</title>
+<!--
+  MikroTik Hotspot login page. Upload to the router's hotspot folder as login.html
+  (WinBox > Files > hotspot), replacing the default one.
+  The router fills in $(mac) and $(ip) for the device that is trying to connect,
+  and this page forwards the customer to the payment portal with them.
+
+  CHANGE THIS ONE LINE to your portal's address (must also be in the walled garden):
+-->
+<meta http-equiv="refresh" content="0; url=https://YOUR_PORTAL_HOST/?mac=$(mac-esc)&amp;ip=$(ip)">
+<style>
+  body { font-family: system-ui, sans-serif; display: grid; place-items: center; min-height: 100vh; margin: 0; background: #f4f6f8; color: #1d2733; }
+  a { color: #0b6b3a; font-weight: 600; }
+</style>
+</head>
+<body>
+  <p>Opening the payment page… <a href="https://YOUR_PORTAL_HOST/?mac=$(mac-esc)&amp;ip=$(ip)">Tap here if nothing happens</a>.</p>
+</body>
+</html>

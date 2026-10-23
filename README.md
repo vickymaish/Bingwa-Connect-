@@ -71,3 +71,10 @@ The payment-status endpoint uses `checkoutRequestId` returned by `/api/pay`, for
 - Restrict callback traffic at the network edge where feasible. Daraja callbacks have no application-level signature verification here; payment state is only applied to a previously created checkout request and the callback amount must match the stored plan amount.
 - Payment callbacks are idempotent by checkout request ID and pending status. Repeated callbacks do not extend a subscription twice.
 - Connect `status` and `macAddress` changes to the ISP's router/RADIUS or network access controller to actually enable or block internet access. This app stores entitlement state; it does not configure network equipment.
+
+## TBD (to be discussed with client)
+
+- Bundles are paid manually to the Buy Goods till; delivery relies on the client's existing Bingwa auto app. STK push for bundles and automatic delivery: TBD.
+- Bundle price list is hardcoded in public\portal.html (const BUNDLES); move to database + admin: TBD.
+- Home WiFi STK push runs on Daraja SANDBOX (no real money). Daraja Go Live for the client's till: TBD.
+- Final price list from client: TBD.

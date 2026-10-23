@@ -2,7 +2,6 @@ const axios = require('axios');
 
 const PLANS = Object.freeze({ weekly: { amount: 300, days: 7 }, monthly: { amount: 999, days: 30 } });
 const isProduction = process.env.MPESA_ENV === 'production';
-// TODO: Switch to the production Daraja URLs only after production credentials are configured.
 const baseUrl = isProduction ? 'https://api.safaricom.co.ke' : 'https://sandbox.safaricom.co.ke';
 
 function requiredEnv(name) {
@@ -11,7 +10,12 @@ function requiredEnv(name) {
   return value;
 }
 
+// Daraja tokens last ~3600s. Cache one so every STK push/query doesn't hit /oauth.
+let cachedToken = null;
+let cachedTokenExpiresAt = 0;
+
 async function getAccessToken() {
+  if (cachedToken && Date.now() < cachedTokenExpiresAt) return cachedToken;
   const credentialPrefix = isProduction ? 'MPESA_PRODUCTION' : 'MPESA_SANDBOX';
   const credentials = Buffer.from(
     `${requiredEnv(`${credentialPrefix}_CONSUMER_KEY`)}:${requiredEnv(`${credentialPrefix}_CONSUMER_SECRET`)}`
@@ -19,7 +23,10 @@ async function getAccessToken() {
   const response = await axios.get(`${baseUrl}/oauth/v1/generate?grant_type=client_credentials`, {
     headers: { Authorization: `Basic ${credentials}` }, timeout: 15000
   });
-  return response.data.access_token;
+  const expiresInSeconds = Number(response.data.expires_in) || 3599;
+  cachedToken = response.data.access_token;
+  cachedTokenExpiresAt = Date.now() + (expiresInSeconds - 60) * 1000; // refresh a minute early
+  return cachedToken;
 }
 
 function darajaTimestamp(date = new Date()) {
@@ -33,23 +40,33 @@ function darajaTimestamp(date = new Date()) {
   return `${parts.year}${parts.month}${parts.day}${parts.hour}${parts.minute}${parts.second}`;
 }
 
-async function initiateStkPush({ phone, plan }) {
-  const selectedPlan = PLANS[plan];
-  if (!selectedPlan) throw new Error('Unsupported payment plan');
-
+function stkCredentials() {
   const shortcode = requiredEnv('MPESA_SHORTCODE');
   const passkey = requiredEnv('MPESA_PASSKEY');
+  const timestamp = darajaTimestamp();
+  const password = Buffer.from(`${shortcode}${passkey}${timestamp}`).toString('base64');
+  return { shortcode, timestamp, password };
+}
+
+function validatedCallbackUrl() {
   const callbackUrl = requiredEnv('MPESA_CALLBACK_URL');
-  let parsedCallbackUrl;
-  try { parsedCallbackUrl = new URL(callbackUrl); } catch (_) {}
-  if (!parsedCallbackUrl || parsedCallbackUrl.protocol !== 'https:' ||
-      /(^|\.)example$|^(localhost|127\.0\.0\.1)$/.test(parsedCallbackUrl.hostname)) {
+  let parsed;
+  try { parsed = new URL(callbackUrl); } catch (_) {}
+  if (!parsed || parsed.protocol !== 'https:' ||
+      /(^|\.)example$|^(localhost|127\.0\.0\.1)$/.test(parsed.hostname)) {
     const error = new Error('Set MPESA_CALLBACK_URL to a publicly reachable HTTPS URL ending in /api/mpesa/callback (use an HTTPS tunnel such as ngrok for local testing).');
     error.code = 'MPESA_CONFIG_ERROR';
     throw error;
   }
-  const timestamp = darajaTimestamp();
-  const password = Buffer.from(`${shortcode}${passkey}${timestamp}`).toString('base64');
+  return callbackUrl;
+}
+
+async function initiateStkPush({ phone, plan }) {
+  const selectedPlan = PLANS[plan];
+  if (!selectedPlan) throw new Error('Unsupported payment plan');
+
+  const callbackUrl = validatedCallbackUrl();
+  const { shortcode, timestamp, password } = stkCredentials();
   const accessToken = await getAccessToken();
 
   const response = await axios.post(`${baseUrl}/mpesa/stkpush/v1/processrequest`, {
@@ -69,4 +86,22 @@ async function initiateStkPush({ phone, plan }) {
   return response.data;
 }
 
-module.exports = { PLANS, initiateStkPush };
+/**
+ * Ask Safaricom directly what happened to an STK push.
+ * The callback endpoint is public, so its body can be forged; this answer cannot.
+ * Resolves with { ResultCode, ResultDesc, ... } once the transaction is final.
+ * Throws (Daraja returns HTTP 500 / errorCode 500.001.1001) while it is still processing.
+ */
+async function queryStkPush(checkoutRequestId) {
+  const { shortcode, timestamp, password } = stkCredentials();
+  const accessToken = await getAccessToken();
+  const response = await axios.post(`${baseUrl}/mpesa/stkpushquery/v1/query`, {
+    BusinessShortCode: shortcode,
+    Password: password,
+    Timestamp: timestamp,
+    CheckoutRequestID: checkoutRequestId
+  }, { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 20000 });
+  return response.data;
+}
+
+module.exports = { PLANS, initiateStkPush, queryStkPush };

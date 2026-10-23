@@ -6,6 +6,7 @@ const paymentRoutes = require('./routes/payment');
 const customerRoutes = require('./routes/customers');
 const portalRoutes = require('./routes/portal');
 const { startScheduler } = require('./services/scheduler');
+const { checkConnection } = require('./services/network');
 
 const app = express();
 app.disable('x-powered-by');
@@ -60,12 +61,34 @@ app.use((error, req, res, next) => {
   res.status(status).json({ error: message });
 });
 
+// Make the database's indexes match the models. Removes leftovers from older versions,
+// e.g. a non-sparse unique macAddress index that lets only ONE customer exist without a MAC.
+async function syncDatabaseIndexes() {
+  for (const model of [require('./models/Customer'), require('./models/Payment')]) {
+    try {
+      const dropped = await model.syncIndexes();
+      if (dropped.length) console.log(`Database: replaced outdated ${model.modelName} indexes: ${dropped.join(', ')}`);
+    } catch (error) {
+      console.error(`Database: could not update ${model.modelName} indexes:`, { message: error.message, code: error.code });
+    }
+  }
+}
+
 const port = Number(process.env.PORT) || 3000;
 async function start() {
   if (!process.env.MONGODB_URI) throw new Error('MONGODB_URI is required. Copy .env.example to .env and configure it.');
-  await mongoose.connect(process.env.MONGODB_URI);
+  await mongoose.connect(process.env.MONGODB_URI, { serverSelectionTimeoutMS: 10000 });
+  await syncDatabaseIndexes();
   startScheduler();
   app.listen(port, () => console.log(`ISP customer system listening on port ${port}`));
+
+  // Report router status at boot. The app keeps running if the router is down:
+  // customers queue up as "out of sync" and are switched on/off once it's reachable.
+  const router = await checkConnection();
+  const line = `Router [${router.driver}]: ${router.message}` +
+    (router.version ? ` RouterOS ${router.version}` : '') +
+    (router.hotspots ? ` | Hotspot: ${router.hotspots.join(', ')}` : '');
+  (router.ok ? console.log : console.error)(line);
 }
 
 if (require.main === module) {
