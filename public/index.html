@@ -315,7 +315,7 @@
         <div class="head center reveal">
           <span class="eyebrow">Bundles</span>
           <h2 id="bundles-title">Data, minutes &amp; SMS deals</h2>
-          <p>For your Safaricom line. Pick a deal, approve the M-Pesa prompt, and the bundle arrives by SMS from Safaricom.</p>
+          <p>Pick a deal and pay with M-Pesa. Delivered instantly to your number or any other Safaricom number.</p>
         </div>
         <div class="tabs reveal" role="tablist" aria-label="Bundle type">
           <button class="tab" role="tab" type="button" data-tab="data" aria-selected="true">Data</button>
@@ -336,7 +336,7 @@
             <li>Enter your PIN and send</li>
           </ol>
         </div>
-        <p class="fine">Pay from the line that should get the bundle. Deals marked “1 per day” can be bought once a day per line. Emmanuel Bingwa deals is an independent agent; prices may change.</p>
+        <p class="fine">Buying for someone else? Tap “Pay with M-Pesa” and choose “Someone else” at checkout. Paying manually to the till sends the bundle to the paying number. Emmanuel Bingwa deals is an independent agent; prices may change.</p>
       </div>
     </section>
 
@@ -486,15 +486,10 @@
           <button class="close-modal" type="button" data-close-bundle aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
         </div>
         <div class="summary"><span>Amount</span><span id="bundle-amount"></span></div>
-        <form id="bundle-form" novalidate>
-          <label for="bundle-phone">M-Pesa phone number</label>
-          <input id="bundle-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0712 345 678" maxlength="16" required>
-          <p class="hint" id="bundle-note"></p>
-          <p class="error" id="bundle-error" role="alert"></p>
-          <button class="btn btn-solid" id="bundle-pay" type="submit" style="width:100%">Pay with M-Pesa</button>
-        </form>
+        <a class="btn btn-solid" id="bundle-buy" href="https://bingwa.co.ke/buy/emmanuel" rel="noopener" style="width:100%">Pay with M-Pesa</a>
+        <p class="hint" style="text-align:center;margin-top:12px">For you or someone else · instant delivery.<br>Opens our secure Bingwa checkout: tap the same deal there.</p>
         <details class="manual">
-          <summary>Or pay manually with Lipa na M-Pesa</summary>
+          <summary>Or pay with our Till 4134662 (bundle goes to the paying number)</summary>
           <div class="pay-box">
             <div class="pay-row"><span>Till number</span><strong>4134662</strong><button class="copy" type="button" data-copy="4134662">Copy</button></div>
             <div class="pay-row"><span>Exact amount</span><strong id="bundle-amount-2"></strong><button class="copy" type="button" id="copy-amount">Copy</button></div>
@@ -505,22 +500,6 @@
             <li>Enter your PIN. Your bundle arrives by SMS from Safaricom.</li>
           </ol>
         </details>
-      </div>
-      <div id="b-wait" class="state" hidden aria-live="polite">
-        <div class="state-mark" aria-hidden="true"><span class="spinner"></span></div>
-        <h2>Check your phone</h2>
-        <p>Enter your M-Pesa PIN on the prompt. Keep this page open while we confirm your payment.</p>
-      </div>
-      <div id="b-success" class="state" hidden aria-live="polite">
-        <div class="state-mark success" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-        <h2>Payment received</h2>
-        <p>Your bundle is on its way. You’ll get an SMS from Safaricom in a few minutes.</p>
-        <button class="btn btn-solid" type="button" data-close-bundle>Done</button>
-      </div>
-      <div id="b-fail" class="state" hidden aria-live="polite">
-        <div class="state-mark fail" aria-hidden="true"><span style="font-size:1.5rem;font-weight:600">!</span></div>
-        <h2>Payment not confirmed</h2><p id="b-fail-msg" role="status"></p>
-        <div class="modal-actions"><button class="btn btn-quiet" type="button" data-close-bundle>Close</button><button class="btn btn-solid" id="bundle-retry" type="button">Try again</button></div>
       </div>
     </div>
   </dialog>
@@ -692,42 +671,39 @@
   </script>
 
   <script>
-    // Display list. The server (services/bundles.js) has the same prices and decides the amount charged.
-    // TBD: move to the database with an admin screen.
-    // limit: 'daily' = one Bingwa offer per line per day; 'multi' = can be bought many times.
+    // Same list and prices as the client's AutoBundles store (https://bingwa.co.ke/buy/emmanuel).
+    // Their system delivers by AMOUNT, so these prices must match the store exactly. Update both together.
+    const STORE_URL = 'https://bingwa.co.ke/buy/emmanuel';
     const BUNDLES = {
       data: [
-        { size: '1GB', valid: '1 hour', price: 19, limit: 'daily', group: 'Hourly' },
-        { size: '250MB', valid: '24 hours', price: 20, limit: 'daily', group: '24 hours' },
-        { size: '1GB', valid: '1 hour', price: 23, limit: 'multi', group: 'Hourly' },
-        { size: '1GB', valid: '1 hour', price: 25, limit: 'multi', group: 'Hourly' },
-        { size: '250MB', valid: 'Buy many times', price: 26, limit: 'multi', group: '24 hours' },
-        { size: '400MB', valid: '7 days', price: 49, limit: 'daily', group: '7 days' },
-        { size: '1.5GB', valid: '3 hours', price: 50, limit: 'daily', group: 'Hourly' },
-        { size: '750MB', valid: '24 hours', price: 52, limit: 'daily', group: '24 hours' },
-        { size: '750MB', valid: '24 hours', price: 53, limit: 'multi', group: '24 hours' },
-        { size: '750MB + 50 SMS', valid: '24 hours', price: 54, limit: 'daily', group: '24 hours' },
-        { size: '1GB', valid: 'Till midnight', price: 55, limit: 'daily', group: 'Till midnight' },
-        { size: '1.5GB', valid: '24 hours', price: 99, limit: 'daily', group: '24 hours' },
-        { size: '1GB', valid: '24 hours', price: 100, limit: 'daily', group: '24 hours' },
-        { size: '2GB', valid: '24 hours', price: 105, limit: 'multi', group: '24 hours' },
-        { size: '1.5GB', valid: '24 hours', price: 106, limit: 'multi', group: '24 hours' },
-        { size: '2GB', valid: '24 hours', price: 110, limit: 'multi', group: '24 hours' }
+        { size: '1GB', valid: '1 hour', price: 19, group: 'Hourly' },
+        { size: '250MB', valid: '24 hours', price: 20, group: '24 hours' },
+        { size: '1GB Tunukiwa', valid: '1 hour', price: 23, group: 'Hourly' },
+        { size: '250MB Patamore', valid: '24 hours', price: 25, group: '24 hours' },
+        { size: '1GB Blaze', valid: '1 hour', price: 27, group: 'Hourly' },
+        { size: '400MB', valid: '1 hour', price: 29, group: 'Hourly' },
+        { size: '400MB', valid: '7 days', price: 49, group: '7 days' },
+        { size: '1.5GB', valid: '3 hours', price: 50, group: 'Hourly' },
+        { size: '750MB Patamore', valid: '24 hours', price: 52, group: '24 hours' },
+        { size: '750MB', valid: '24 hours', price: 54, group: '24 hours' },
+        { size: '1GB', valid: 'Till midnight', price: 55, group: 'Till midnight' },
+        { size: '900MB', valid: 'Till midnight', price: 58, group: 'Till midnight' },
+        { size: '1.5GB', valid: '24 hours', price: 99, group: '24 hours' },
+        { size: '1.5GB', valid: '24 hours', price: 100, group: '24 hours' },
+        { size: '1.5GB Patamore', valid: '24 hours', price: 106, group: '24 hours' }
       ],
       minutes: [
-        { size: '45 minutes', valid: '3 hours', price: 21, limit: 'multi' },
-        { size: '45 minutes', valid: '3 hours', price: 22, limit: 'multi' },
-        { size: '60 minutes', valid: 'Till midnight', price: 51, limit: 'multi' },
-        { size: '50 minutes', valid: 'Till midnight', price: 56, limit: 'multi' },
-        { size: '100 minutes', valid: 'Till midnight', price: 101, limit: 'multi' },
-        { size: '250 minutes', valid: '7 days', price: 199, limit: 'multi' },
-        { size: '313 minutes', valid: '7 days', price: 220, limit: 'multi' }
+        { size: '45 minutes', valid: '3 hours', price: 21 },
+        { size: '45 minutes', valid: '3 hours', price: 22 },
+        { size: '60 minutes', valid: 'Till midnight', price: 51 },
+        { size: '50 minutes', valid: 'Till midnight', price: 56 },
+        { size: '100 minutes', valid: '2 days', price: 101 },
+        { size: '1,000 minutes', valid: '30 days', price: 1010 }
       ],
       sms: [
-        { size: '20 SMS', valid: '1 day', price: 5, limit: 'multi' },
-        { size: '200 SMS', valid: '1 day', price: 10, limit: 'multi' },
-        { size: '1,000 SMS', valid: '7 days', price: 30, limit: 'multi' },
-        { size: '1,500 SMS', valid: '30 days', price: 103, limit: 'multi' }
+        { size: '20 SMS', valid: '1 day', price: 5 },
+        { size: '200 SMS', valid: '1 day', price: 10 },
+        { size: '1,000 SMS', valid: '7 days', price: 30 }
       ]
     };
     (() => {
@@ -756,7 +732,7 @@
             <span class="bundle-size">${esc(b.size)}</span>
             <span class="bundle-valid">${esc(b.valid)}</span>
             <span class="bundle-foot"><span class="bundle-price">KSh ${b.price}</span>
-              <span class="bundle-tag">${b.limit === 'daily' ? '1 per day' : 'Buy many'}</span></span>
+              </span>
           </button>`).join('');
       }
 
@@ -766,73 +742,16 @@
         render();
       }));
 
-      const bView = (v) => ['b-form', 'b-wait', 'b-success', 'b-fail'].forEach((id) => { document.getElementById(id).hidden = id !== v; });
-      const bPay = document.getElementById('bundle-pay');
-      const bErr = document.getElementById('bundle-error');
-      const bPhone = document.getElementById('bundle-phone');
-      let bPoll, bTimeout;
-      const bStop = () => { clearInterval(bPoll); clearTimeout(bTimeout); };
-      const savedPhone = (() => { try { return localStorage.getItem('bingwa-phone') || ''; } catch (_) { return ''; } })();
-
       grid.addEventListener('click', (e) => {
         const card = e.target.closest('.bundle'); if (!card) return;
-        current = { ...BUNDLES[tab].find((b) => String(b.price) === card.dataset.price), category: tab };
+        current = BUNDLES[tab].find((b) => String(b.price) === card.dataset.price);
         document.getElementById('bundle-title').textContent = current.size;
         document.getElementById('bundle-sub').textContent = current.valid;
-        document.getElementById('bundle-amount').textContent = `KSh ${current.price}`;
+        document.getElementById('bundle-amount').textContent = `KSh ${current.price.toLocaleString('en-KE')}`;
         document.getElementById('bundle-amount-2').textContent = `KSh ${current.price}`;
-        document.getElementById('bundle-note').textContent = current.limit === 'daily'
-          ? 'Use the number that should get the bundle. This deal can be bought once a day per line.'
-          : 'Use the number that should get the bundle. You can buy this deal as many times as you like.';
-        bErr.textContent = ''; bPay.disabled = false; bPay.textContent = `Pay KSh ${current.price} with M-Pesa`;
-        if (!bPhone.value && savedPhone) bPhone.value = savedPhone;
-        bView('b-form');
+        document.getElementById('bundle-buy').textContent = `Pay KSh ${current.price.toLocaleString('en-KE')} with M-Pesa`;
         dialog.showModal();
       });
-
-      async function bCheck(id) {
-        try {
-          const r = await fetch(`/api/payment-status?checkoutRequestId=${encodeURIComponent(id)}`, { cache: 'no-store' });
-          if (!r.ok) return;
-          const { status } = await r.json();
-          if (status === 'paid' || status === 'paid_pending_activation') { bStop(); bView('b-success'); }
-          else if (status === 'failed') {
-            bStop();
-            document.getElementById('b-fail-msg').textContent = 'The payment was cancelled or declined. You can try again.';
-            bView('b-fail');
-          }
-        } catch (_) { /* keep checking after a brief network blip */ }
-      }
-
-      document.getElementById('bundle-form').addEventListener('submit', async (e) => {
-        e.preventDefault(); bStop(); bErr.textContent = '';
-        const phone = normalizePhone(bPhone.value);
-        if (!phone) { bErr.textContent = 'Enter a valid Safaricom number, e.g. 0712 345 678.'; return; }
-        try { localStorage.setItem('bingwa-phone', bPhone.value.trim()); } catch (_) {}
-        bPay.disabled = true; bPay.textContent = 'Sending prompt…';
-        try {
-          const r = await fetch('/api/bundles/pay', {
-            method: 'POST', headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ phone, category: current.category, price: current.price })
-          });
-          const data = await r.json().catch(() => ({}));
-          if (!r.ok || !data.checkoutRequestId) throw new Error(data.error || 'Could not start the payment. Please try again.');
-          bView('b-wait');
-          bPoll = setInterval(() => bCheck(data.checkoutRequestId), 3000);
-          bTimeout = setTimeout(() => {
-            bStop();
-            document.getElementById('b-fail-msg').textContent = 'We have not received confirmation yet. If money was deducted, your bundle will still arrive. Contact support if it doesn’t.';
-            bView('b-fail');
-          }, 240000);
-        } catch (err) {
-          bErr.textContent = err instanceof TypeError ? 'Could not connect. Check your internet and try again.' : err.message;
-          bPay.disabled = false; bPay.textContent = `Pay KSh ${current.price} with M-Pesa`;
-        }
-      });
-      document.getElementById('bundle-retry').addEventListener('click', () => {
-        bErr.textContent = ''; bPay.disabled = false; bPay.textContent = `Pay KSh ${current.price} with M-Pesa`; bView('b-form');
-      });
-      dialog.addEventListener('close', bStop);
 
       async function copy(text, button) {
         try { await navigator.clipboard.writeText(text); } catch (_) {
