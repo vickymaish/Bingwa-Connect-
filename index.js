@@ -6,6 +6,7 @@ const paymentRoutes = require('./routes/payment');
 const customerRoutes = require('./routes/customers');
 const portalRoutes = require('./routes/portal');
 const cronRoutes = require('./routes/cron');
+const bundleRoutes = require('./routes/bundles');
 const { startScheduler } = require('./services/scheduler');
 const { checkConnection } = require('./services/network');
 
@@ -33,6 +34,7 @@ app.use('/api', async (req, res, next) => {
   }
 });
 app.use('/api', cronRoutes);
+app.use('/api', bundleRoutes);
 app.use('/api', paymentRoutes);
 app.use('/api', customerRoutes);
 app.use('/', portalRoutes);

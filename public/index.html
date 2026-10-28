@@ -221,6 +221,10 @@
     .copy { min-height: 34px; padding: 0 12px; border: 1px solid var(--line-strong); border-radius: var(--radius); background: transparent; font-size: .72rem; font-weight: 600; letter-spacing: .12em; text-transform: uppercase; cursor: pointer; }
     .copy:hover { border-color: #fff; }
     .pay-note { margin: var(--s3) 0; padding: 12px 14px; border-left: 2px solid #fff; background: var(--surface-2); color: var(--text-2); font-size: .85rem; }
+    .manual { margin-top: var(--s4); border-top: 1px solid var(--line); }
+    .manual summary { padding: var(--s2) 0; color: var(--text-2); font-size: .88rem; cursor: pointer; }
+    .manual summary:hover { color: #fff; }
+    .manual[open] summary { margin-bottom: var(--s2); }
     @media (min-width: 720px) { .till-card { grid-template-columns: 1fr 1.3fr; align-items: center; padding: var(--s5); } }
 
     @keyframes spin { to { transform: rotate(360deg); } }
@@ -311,7 +315,7 @@
         <div class="head center reveal">
           <span class="eyebrow">Bundles</span>
           <h2 id="bundles-title">Data, minutes &amp; SMS deals</h2>
-          <p>For your Safaricom line. Pick a deal and pay the exact amount to our till. The bundle arrives by SMS from Safaricom.</p>
+          <p>For your Safaricom line. Pick a deal, approve the M-Pesa prompt, and the bundle arrives by SMS from Safaricom.</p>
         </div>
         <div class="tabs reveal" role="tablist" aria-label="Bundle type">
           <button class="tab" role="tab" type="button" data-tab="data" aria-selected="true">Data</button>
@@ -321,7 +325,7 @@
         <div class="bundle-grid" id="bundle-grid" role="tabpanel" aria-live="polite"></div>
         <div class="till-card reveal">
           <div>
-            <span class="eyebrow">Lipa na M-Pesa · Buy Goods</span>
+            <span class="eyebrow">Prefer to pay manually? Lipa na M-Pesa · Buy Goods</span>
             <p class="till-number">Till <strong>4134662</strong></p>
             <p class="till-name">Emmanuel Bingwa</p>
           </div>
@@ -476,22 +480,48 @@
 
   <dialog id="bundle-dialog" aria-labelledby="bundle-title">
     <div class="modal">
-      <div class="modal-heading">
-        <div><h2 id="bundle-title"></h2><p class="modal-sub" id="bundle-sub"></p></div>
-        <button class="close-modal" type="button" data-close-bundle aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+      <div id="b-form">
+        <div class="modal-heading">
+          <div><h2 id="bundle-title"></h2><p class="modal-sub" id="bundle-sub"></p></div>
+          <button class="close-modal" type="button" data-close-bundle aria-label="Close"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg></button>
+        </div>
+        <div class="summary"><span>Amount</span><span id="bundle-amount"></span></div>
+        <form id="bundle-form" novalidate>
+          <label for="bundle-phone">M-Pesa phone number</label>
+          <input id="bundle-phone" type="tel" inputmode="tel" autocomplete="tel" placeholder="0712 345 678" maxlength="16" required>
+          <p class="hint" id="bundle-note"></p>
+          <p class="error" id="bundle-error" role="alert"></p>
+          <button class="btn btn-solid" id="bundle-pay" type="submit" style="width:100%">Pay with M-Pesa</button>
+        </form>
+        <details class="manual">
+          <summary>Or pay manually with Lipa na M-Pesa</summary>
+          <div class="pay-box">
+            <div class="pay-row"><span>Till number</span><strong>4134662</strong><button class="copy" type="button" data-copy="4134662">Copy</button></div>
+            <div class="pay-row"><span>Exact amount</span><strong id="bundle-amount-2"></strong><button class="copy" type="button" id="copy-amount">Copy</button></div>
+          </div>
+          <ol class="pay-steps">
+            <li>Open <b>M-Pesa</b> → <b>Lipa na M-Pesa</b> → <b>Buy Goods and Services</b></li>
+            <li>Enter till <b>4134662</b> and the exact amount above</li>
+            <li>Enter your PIN. Your bundle arrives by SMS from Safaricom.</li>
+          </ol>
+        </details>
       </div>
-      <div class="pay-box">
-        <div class="pay-row"><span>Till number</span><strong>4134662</strong><button class="copy" type="button" data-copy="4134662">Copy</button></div>
-        <div class="pay-row"><span>Exact amount</span><strong id="bundle-amount"></strong><button class="copy" type="button" id="copy-amount">Copy</button></div>
+      <div id="b-wait" class="state" hidden aria-live="polite">
+        <div class="state-mark" aria-hidden="true"><span class="spinner"></span></div>
+        <h2>Check your phone</h2>
+        <p>Enter your M-Pesa PIN on the prompt. Keep this page open while we confirm your payment.</p>
       </div>
-      <ol class="pay-steps">
-        <li>Open <b>M-Pesa</b> → <b>Lipa na M-Pesa</b></li>
-        <li>Choose <b>Buy Goods and Services</b></li>
-        <li>Enter till <b>4134662</b> and the exact amount above</li>
-        <li>Enter your PIN. Your bundle arrives by SMS from Safaricom.</li>
-      </ol>
-      <p class="pay-note" id="bundle-note"></p>
-      <button class="btn btn-solid" type="button" data-close-bundle style="width:100%">Done</button>
+      <div id="b-success" class="state" hidden aria-live="polite">
+        <div class="state-mark success" aria-hidden="true"><svg width="28" height="28" viewBox="0 0 24 24" fill="none"><path d="m5 12.5 4.5 4.5L19 7.5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h2>Payment received</h2>
+        <p>Your bundle is on its way. You’ll get an SMS from Safaricom in a few minutes.</p>
+        <button class="btn btn-solid" type="button" data-close-bundle>Done</button>
+      </div>
+      <div id="b-fail" class="state" hidden aria-live="polite">
+        <div class="state-mark fail" aria-hidden="true"><span style="font-size:1.5rem;font-weight:600">!</span></div>
+        <h2>Payment not confirmed</h2><p id="b-fail-msg" role="status"></p>
+        <div class="modal-actions"><button class="btn btn-quiet" type="button" data-close-bundle>Close</button><button class="btn btn-solid" id="bundle-retry" type="button">Try again</button></div>
+      </div>
     </div>
   </dialog>
 
@@ -662,8 +692,8 @@
   </script>
 
   <script>
-    // TBD: bundles are paid manually to the till for now. Move this list to the database
-    // (admin-editable) and add STK push / auto-delivery once discussed with the client.
+    // Display list. The server (services/bundles.js) has the same prices and decides the amount charged.
+    // TBD: move to the database with an admin screen.
     // limit: 'daily' = one Bingwa offer per line per day; 'multi' = can be bought many times.
     const BUNDLES = {
       data: [
@@ -736,17 +766,73 @@
         render();
       }));
 
+      const bView = (v) => ['b-form', 'b-wait', 'b-success', 'b-fail'].forEach((id) => { document.getElementById(id).hidden = id !== v; });
+      const bPay = document.getElementById('bundle-pay');
+      const bErr = document.getElementById('bundle-error');
+      const bPhone = document.getElementById('bundle-phone');
+      let bPoll, bTimeout;
+      const bStop = () => { clearInterval(bPoll); clearTimeout(bTimeout); };
+      const savedPhone = (() => { try { return localStorage.getItem('bingwa-phone') || ''; } catch (_) { return ''; } })();
+
       grid.addEventListener('click', (e) => {
         const card = e.target.closest('.bundle'); if (!card) return;
-        current = BUNDLES[tab].find((b) => String(b.price) === card.dataset.price);
+        current = { ...BUNDLES[tab].find((b) => String(b.price) === card.dataset.price), category: tab };
         document.getElementById('bundle-title').textContent = current.size;
         document.getElementById('bundle-sub').textContent = current.valid;
         document.getElementById('bundle-amount').textContent = `KSh ${current.price}`;
+        document.getElementById('bundle-amount-2').textContent = `KSh ${current.price}`;
         document.getElementById('bundle-note').textContent = current.limit === 'daily'
-          ? 'Pay from the line that should get the bundle. This deal can be bought once a day per line; a second purchase on the same day may not go through.'
-          : 'Pay from the line that should get the bundle. You can buy this deal as many times as you like.';
+          ? 'Use the number that should get the bundle. This deal can be bought once a day per line.'
+          : 'Use the number that should get the bundle. You can buy this deal as many times as you like.';
+        bErr.textContent = ''; bPay.disabled = false; bPay.textContent = `Pay KSh ${current.price} with M-Pesa`;
+        if (!bPhone.value && savedPhone) bPhone.value = savedPhone;
+        bView('b-form');
         dialog.showModal();
       });
+
+      async function bCheck(id) {
+        try {
+          const r = await fetch(`/api/payment-status?checkoutRequestId=${encodeURIComponent(id)}`, { cache: 'no-store' });
+          if (!r.ok) return;
+          const { status } = await r.json();
+          if (status === 'paid' || status === 'paid_pending_activation') { bStop(); bView('b-success'); }
+          else if (status === 'failed') {
+            bStop();
+            document.getElementById('b-fail-msg').textContent = 'The payment was cancelled or declined. You can try again.';
+            bView('b-fail');
+          }
+        } catch (_) { /* keep checking after a brief network blip */ }
+      }
+
+      document.getElementById('bundle-form').addEventListener('submit', async (e) => {
+        e.preventDefault(); bStop(); bErr.textContent = '';
+        const phone = normalizePhone(bPhone.value);
+        if (!phone) { bErr.textContent = 'Enter a valid Safaricom number, e.g. 0712 345 678.'; return; }
+        try { localStorage.setItem('bingwa-phone', bPhone.value.trim()); } catch (_) {}
+        bPay.disabled = true; bPay.textContent = 'Sending prompt…';
+        try {
+          const r = await fetch('/api/bundles/pay', {
+            method: 'POST', headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ phone, category: current.category, price: current.price })
+          });
+          const data = await r.json().catch(() => ({}));
+          if (!r.ok || !data.checkoutRequestId) throw new Error(data.error || 'Could not start the payment. Please try again.');
+          bView('b-wait');
+          bPoll = setInterval(() => bCheck(data.checkoutRequestId), 3000);
+          bTimeout = setTimeout(() => {
+            bStop();
+            document.getElementById('b-fail-msg').textContent = 'We have not received confirmation yet. If money was deducted, your bundle will still arrive. Contact support if it doesn’t.';
+            bView('b-fail');
+          }, 240000);
+        } catch (err) {
+          bErr.textContent = err instanceof TypeError ? 'Could not connect. Check your internet and try again.' : err.message;
+          bPay.disabled = false; bPay.textContent = `Pay KSh ${current.price} with M-Pesa`;
+        }
+      });
+      document.getElementById('bundle-retry').addEventListener('click', () => {
+        bErr.textContent = ''; bPay.disabled = false; bPay.textContent = `Pay KSh ${current.price} with M-Pesa`; bView('b-form');
+      });
+      dialog.addEventListener('close', bStop);
 
       async function copy(text, button) {
         try { await navigator.clipboard.writeText(text); } catch (_) {

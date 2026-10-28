@@ -2,7 +2,15 @@ const mongoose = require('mongoose');
 
 const paymentSchema = new mongoose.Schema({
   phone: { type: String, required: true, index: true },
-  plan: { type: String, enum: ['weekly', 'monthly'], required: true },
+  // 'wifi' = Home WiFi plan (activates the customer); 'bundle' = data/minutes/SMS deal
+  // (the client's Bingwa auto app delivers it after the money reaches the till).
+  kind: { type: String, enum: ['wifi', 'bundle'], default: 'wifi', index: true },
+  plan: { type: String, enum: ['weekly', 'monthly'], required: function () { return this.kind !== 'bundle'; } },
+  bundle: {
+    category: { type: String, enum: ['data', 'minutes', 'sms'] },
+    size: String,
+    valid: String
+  },
   amount: { type: Number, required: true },
   checkoutRequestId: { type: String, unique: true, sparse: true, index: true },
   merchantRequestId: String,

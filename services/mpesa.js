@@ -61,29 +61,47 @@ function validatedCallbackUrl() {
   return callbackUrl;
 }
 
-async function initiateStkPush({ phone, plan }) {
-  const selectedPlan = PLANS[plan];
-  if (!selectedPlan) throw new Error('Unsupported payment plan');
+/**
+ * Sends an M-Pesa prompt (STK push) for any amount.
+ * Where the money goes:
+ *  - MPESA_TILL_NUMBER unset (sandbox/paybill): CustomerPayBillOnline to MPESA_SHORTCODE.
+ *  - MPESA_TILL_NUMBER set (Buy Goods till, after Daraja Go Live): CustomerBuyGoodsOnline,
+ *    paid INTO the till. MPESA_SHORTCODE must then be the till's store / head-office number
+ *    that Safaricom issued with the passkey (not the till number itself).
+ */
+async function initiateStkPayment({ phone, amount, accountReference, description }) {
+  if (!Number.isInteger(amount) || amount < 1) throw new Error('Invalid payment amount');
 
   const callbackUrl = validatedCallbackUrl();
   const { shortcode, timestamp, password } = stkCredentials();
+  const tillNumber = (process.env.MPESA_TILL_NUMBER || '').trim();
   const accessToken = await getAccessToken();
 
   const response = await axios.post(`${baseUrl}/mpesa/stkpush/v1/processrequest`, {
     BusinessShortCode: shortcode,
     Password: password,
     Timestamp: timestamp,
-    TransactionType: 'CustomerPayBillOnline',
-    Amount: selectedPlan.amount,
+    TransactionType: tillNumber ? 'CustomerBuyGoodsOnline' : 'CustomerPayBillOnline',
+    Amount: amount,
     PartyA: phone,
-    PartyB: shortcode,
+    PartyB: tillNumber || shortcode,
     PhoneNumber: phone,
     CallBackURL: callbackUrl,
-    AccountReference: `ISP-${plan}`,
-    TransactionDesc: `${plan} internet subscription`
+    AccountReference: String(accountReference).slice(0, 12),
+    TransactionDesc: String(description).slice(0, 13)
   }, { headers: { Authorization: `Bearer ${accessToken}` }, timeout: 20000 });
 
   return response.data;
+}
+
+/** Home WiFi plan payment (weekly / monthly). */
+async function initiateStkPush({ phone, plan }) {
+  const selectedPlan = PLANS[plan];
+  if (!selectedPlan) throw new Error('Unsupported payment plan');
+  return initiateStkPayment({
+    phone, amount: selectedPlan.amount,
+    accountReference: `ISP-${plan}`, description: `${plan} WiFi`
+  });
 }
 
 /**
@@ -104,4 +122,4 @@ async function queryStkPush(checkoutRequestId) {
   return response.data;
 }
 
-module.exports = { PLANS, initiateStkPush, queryStkPush };
+module.exports = { PLANS, initiateStkPush, initiateStkPayment, queryStkPush };

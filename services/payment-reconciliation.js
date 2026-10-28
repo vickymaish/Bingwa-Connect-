@@ -58,6 +58,14 @@ async function activatePendingPayment(paymentOrId) {
     ? paymentOrId
     : await Payment.findById(paymentOrId?._id || paymentOrId).lean();
   if (!payment || payment.status !== 'paid_pending_activation') return false;
+
+  // Bundles have nothing to switch on here: the money is in the till and the client's
+  // Bingwa auto app sends the bundle from the till's payment SMS. Just mark it paid.
+  if (payment.kind === 'bundle') {
+    await Payment.updateOne({ _id: payment._id, status: 'paid_pending_activation' }, { $set: { status: 'paid' } });
+    return true;
+  }
+
   const plan = PLANS[payment.plan];
   if (!plan) throw new Error(`Cannot activate payment with unknown plan: ${payment.plan}`);
 
